@@ -39,6 +39,11 @@
 - For monorepos, the env file names should have the app name in the file name like - `.env.auth_api.local.example`.
 - Common environment variables should be top level and the rest should be inside their respective repos.
 - When deploying using docker compose, Kubernetes, or GitHub Actions, respect the seperation of env files and don't put all the variables in a single production env file.
+- Versions, Service/Package name, title, and other software informations SHOULD NOT BE IN ENVIRONMENT VARIABLES.
+
+### Config files
+- The config folder should contain the config files.
+- All configurations that do not relate to deployment should be in config files.
 
 ### Docker/Kubernetes
 
