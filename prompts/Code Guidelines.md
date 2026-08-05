@@ -23,8 +23,7 @@
 
 - Encapsulate all related methods in a class. Use static methods with a singleton class when the methods are independant like Services.
 - You may write methods outside of classes for small utilities that doesn't make sense to put in a class.
-- All methods that do not implement business logic and doesn't need to be exported/imported are helper methods.
-- Try to divide work into small helper methods for better readability. If the helper methods don't need to exported, make them private.
+- Try to divide work into small helper methods for better readability. If the helper methods don't need to exported, make them private. All methods that do not implement business logic and doesn't need to be exported/imported are helper methods.
 - Keep all helper methods at the bottom of the class with a divider line before they start.
 - Try to keep function length under 30 lines.
 - Keep the codes modular and reusable. Don't repeat same code.
@@ -58,18 +57,19 @@
 - Query or Repository shouldn't have any logic other than using ORMs/SQLs.
 - Services should contain the core business logic and is responsible for persistence. So services will commit DB changes, but will use Query to get DB data and Repository to mutate DB data.
 - Services should return data in DTO formats.
+- Use Factory pattern when applicable.
 
-### For Python
+### Python
 
 - Follow PEP8 naming conventions.
 - Use UV for package management.
 
-### For Express.js
+### Express.js
 
 - Routers should only define routes to controllers, containing no functions.
 - Controllers should only validate and call services, containing no business logic.
 
-### For Django
+### Django
 
 - Follow Django's app based file structure. DON'T FOLLOW ONION/CLEAN ARCHITECTURE.
 - ViewSets should only validate and call services, containing no business logic.
@@ -132,49 +132,21 @@
   └── uv.lock
   ```
 
-### For FastAPI
+### FastAPI
 
+- Follow Onion Architecture.
 - Routers should only define routes to controllers, containing no functions.
 - Controllers should only validate and call services, containing no business logic.
 - Dependency methods should be in its own file.
 - For authorization, use Policy classes similar to Ruby on Rails.
+- Use file names like `_router.py`, `_controller.py`.
 - If there is user authentication, then request.state.user should contain the user information.
 - If there is multi-tenancy, then request.state.tenant should contain the tenant information.
 
 ### ONION ARCHITECTURE
 
-- Follow Onion Architecture. Application should contain services and queries. Example file structure is -
-  
-  ```
-  ├── Dockerfile
-  ├── docs/
-  ├── README.md
-  ├── src
-  │   ├── application/
-  │   ├── common/
-  │   ├── domain/
-  │   ├── infrastructure/
-  │   │   ├── background_job/
-  │   │   ├── integrations/
-  │   │   ├── logging/
-  │   │   ├── persistence/
-  │   │   ├── cache/
-  │   │   ├── security/
-  │   │   ├── tasks/
-  │   │   ├── telemetry/
-  │   │   └── tenancy/
-  │   ├── presentation/
-  │   │   ├── api/
-  │   │   │   ├── v1/
-  │   │   │   │   ├── users/
-  │   │   │   │   │   ├── router.py
-  │   │   │   │   │   ├── schemas.py
-  │   │   │   │   │   ├── dependencies.py
-  │   │   │   │   ...
-  ├── tests/
-  └── uv.lock
-  ```
-  
+- Follow Onion Architecture. Application should contain services and queries.
+- Example file structure is -
   ```
   ├── Dockerfile
   ├── README.md
