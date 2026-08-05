@@ -13,7 +13,8 @@
 - A file should only contain related functions/classes.
 - A file should only contain one main class and smaller helper class that depends on the main class. This applies to ORM models and Controllers/ViewSets too.
 - A file should only contain related methods.
-- Multiple classes or models should be grouped in a single folder.
+- Multiple related classes or models should be grouped in a single folder.
+- If there are multiple similar files like multiple routers, controllers, services etc for the same module/app, then they should be grouped in a folder.
 - Try to keep the file length less than 300 lines, unless the methods are really related and will cause confusion if refactored.
 - Use proper versioning.
 
