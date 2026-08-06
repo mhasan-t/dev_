@@ -10,6 +10,7 @@
 
 ## File and Folder Structure
 
+- Use modular architecture.
 - A file should only contain related functions/classes.
 - A file should only contain one main class and smaller helper class that depends on the main class. This applies to ORM models and Controllers/ViewSets too.
 - A file should only contain related methods.
