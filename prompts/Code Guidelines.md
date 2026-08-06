@@ -29,6 +29,7 @@
 - Keep all helper methods at the bottom of the class with a divider line before they start.
 - Try to keep function length under 30 lines.
 - Keep the codes modular and reusable. Don't repeat same code.
+- Code should be highly readable. Use proper spaces, comments, hints to make it as easily understandable as possible.
 - Apply formatting with the default formatter for IDE after modifying a file. Skip if there's no default formatter configured.
 
 ### Environment Variables
