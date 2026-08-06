@@ -65,6 +65,7 @@
 
 - Follow PEP8 naming conventions.
 - Use UV for package management.
+- Use Pydantic for reading environment variables. Separate the related environment variables in their own file.
 
 ### Express.js
 
