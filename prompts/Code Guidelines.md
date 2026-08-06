@@ -3,7 +3,7 @@
 ## Comments
 
 - Comments should include all information needed to understand the implementation logic.
-- All functions should contain comments over it to describe its usage and purpose.
+- All functions/code blocks should contain comments over it to describe its usage and purpose. Even CSS components.
 - If the parameters and return values of a method are not clear from the definition, add comments before the method explaining them. Follow language specific format.
 - Write comment before every 2/3 lines of code detailing what it does. The comments should help a new engineer understand the project easily who may not know the modules or methods used. Don't explain language syntaxes. Assume the new engineers knows the programming language well, so don't explain codes that do not use any methods or libraries.
 - For DB tables, write comment for each column unless it's obvious like ID, timestamps etc.
