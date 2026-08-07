@@ -37,15 +37,18 @@
 - Group related environment variables together and write comments.
 - Create .env.local.example and .env.production.example
 - .env.local.example should be ready for dev environment so that `mv .env.local.example .env` is enough to start the dev environment.
-- .env.production.example should have dummy values or descriptions like MY_SECRET=<Generate 32+ chars secret using command `openssl rand -hex 32`>
+- .env.production.example should have dummy values or descriptions like MY_SECRET=<Generate 32+ chars secret using command `openssl rand -hex 32`>, SHOPIFY_API_KEY=<Shopify Partner Dashboard client ID>, DOMAIN=<The core domain where the X service is hosted>.
 - For monorepos, the env file names should have the app name in the file name like - `.env.auth_api.local.example`.
 - Common environment variables should be top level and the rest should be inside their respective repos.
 - When deploying using docker compose, Kubernetes, or GitHub Actions, respect the seperation of env files and don't put all the variables in a single production env file.
 - Versions, Service/Package name, title, and other software informations SHOULD NOT BE IN ENVIRONMENT VARIABLES.
+- Group related environment variables together with proper spacing and comments explaining them.
+- The secret values like API Keys and random secrets should be at the bottom of the example env file.
 
 ### Config files
 - The config folder should contain the config files.
 - All configurations that do not relate to deployment should be in config files.
+- Versions, Service/Package name, title, and other software informations should be in config files.
 
 ### Docker/Kubernetes
 
