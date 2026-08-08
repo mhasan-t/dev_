@@ -48,6 +48,7 @@ DOMAIN=<The core domain where the X service is hosted>.
 - When deploying using docker compose, Kubernetes, or GitHub Actions, respect the seperation of env files and don't put all the variables in a single production env file.
 - Versions, Service/Package name, title, and other software informations SHOULD NOT BE IN ENVIRONMENT VARIABLES.
 - Group related environment variables together with proper spacing and comments explaining them.
+- If one env value is dependent on another's value, make sure validation for the dependent variable respects the primary's value. For example - if `ML_EXPORT_ENABLED=false` then the values for `ML_EXPORT_SCHEDULE_CRON`, `ML_EXPORT_BATCH_SIZE`, and all other `ML_EXPORT_*` variables should not be required.
 - The secret values like API Keys and random secrets should be at the bottom of the example env file.
 
 ### Config files
