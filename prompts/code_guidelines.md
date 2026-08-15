@@ -33,6 +33,9 @@
 - Code should be highly readable. Use proper spaces, comments, hints to make it as easily understandable as possible.
 - Apply formatting with the default formatter for IDE after modifying a file. Skip if there's no default formatter configured.
 
+### Database
+- Always use `snake_case` for DB table and column names, but use camel case for representing them in code. For example - a model/ORM class can be `AnalyticsInstallation` but the actual table name in the database should be `analytics_installation`. A class attribute name can be `createdAt` but the underlying database name must be `created_at`.
+
 ### Environment Variables
 
 - Group related environment variables together and write comments.
