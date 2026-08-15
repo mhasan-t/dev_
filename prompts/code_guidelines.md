@@ -32,6 +32,7 @@
 - Services should contain the core business logic and is responsible for persistence. So services will commit DB changes, but will use Query to get DB data and Repository to mutate DB data.
 - Services should return data in DTO formats.
 - Use Factory pattern when applicable.
+- WRITE LOGS FOR EVERY OPERATION.
 
 ### Core Code Rules
 
