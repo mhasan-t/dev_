@@ -289,6 +289,7 @@ DOMAIN=<The core domain where the X service is hosted>.
 
 # Tests
 
-## Unit Tests
-
-## End to End Tests
+- Write test that checks an API endpoint, or a full domain engine together.
+- Don't write tests for small functions, rather test their behaviour as part of the larger test suite.
+- For example - for a API endpoint test, you should assert changes in DB, return values, and internal business logics.
+- Write proper comments for the test assertions with a reference to the file:method it is testing.
