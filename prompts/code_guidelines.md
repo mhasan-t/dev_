@@ -20,6 +20,10 @@
 - Try to keep the file length less than 300 lines, unless the methods are really related and will cause confusion if refactored.
 - Use proper versioning.
 
+# Designing
+- Use Tailwind for designing.
+- Write all the colors and text formats in a global variable instead of repeating them everywhere.
+
 ## Code Structure
 
 ## Implementation Guide
