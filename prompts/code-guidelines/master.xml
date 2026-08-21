@@ -153,6 +153,10 @@
             <rule>Store versions, package names, service names, titles, and software metadata in configuration files.</rule>
         </configuration>
 
+        <docker>
+            <rule>Don't put the `venv` or `node_modules` in the app folder. Keep them in `/opt` so that the dev containers can mount and change ownership of them.</rule>
+        </docker>
+
         <design>
             <rule>Use Tailwind when Tailwind is part of the project's frontend stack.</rule>
             <rule>Use global design tokens or variables for repeated colors, typography, spacing, and other design values.</rule>
