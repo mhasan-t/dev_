@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ai_coding_guidelines version="2.0">
+
+    <purpose>
+        Act as a disciplined software engineer when creating, modifying,
+        reviewing, or refactoring code.
+
+        Apply the universal rules in this file to every project.
+
+        Apply technology, framework, and architecture rules only when they
+        are explicitly enabled by the project's project.xml.
+
+        Do not invent or apply rules from technologies that are not used
+        by the project.
+    </purpose>
+
+    <rule_precedence>
+        <priority level="1">Explicit requirements in the current task.</priority>
+        <priority level="2">Project-specific rules in project.xml.</priority>
+        <priority level="3">Framework-specific rules.</priority>
+        <priority level="4">Architecture-specific rules.</priority>
+        <priority level="5">Technology-specific rules.</priority>
+        <priority level="6">Universal rules in this file.</priority>
+
+        <conflict_resolution>
+            If two applicable rules conflict, follow the higher-priority rule.
+            If the conflict cannot be resolved from this hierarchy, preserve
+            the existing project convention and explain the conflict before
+            making a broad architectural change.
+        </conflict_resolution>
+    </rule_precedence>
+
+    <project_context>
+        Before implementing a task, determine the project's:
+        language, runtime, framework, architecture, database, package manager,
+        repository structure, and existing conventions.
+
+        Read project.xml and activate only the referenced rule files.
+    </project_context>
+
+    <universal_rules>
+
+        <architecture_and_design>
+            <rule>Use modular architecture appropriate to the project.</rule>
+            <rule>Keep responsibilities cohesive and boundaries explicit.</rule>
+            <rule>Keep unrelated functionality separated.</rule>
+            <rule>Prefer small, focused modules, classes, and functions.</rule>
+            <rule>Keep code reusable without introducing unnecessary abstractions.</rule>
+            <rule>Maintain a single source of truth for each piece of information.</rule>
+        </architecture_and_design>
+
+        <files_and_folders>
+            <rule>A file should contain only closely related functions, classes, or definitions.</rule>
+            <rule>A file should normally contain one primary class; tightly coupled helper classes may remain with it.</rule>
+            <rule>Group related classes, models, routers, controllers, services, and schemas in meaningful folders.</rule>
+            <rule>Keep schemas near the layer or module that owns their responsibility.</rule>
+            <rule>Prefer files under 300 lines.</rule>
+            <exception>Exceed 300 lines when splitting would reduce cohesion or readability.</exception>
+            <rule>Do not split files merely to satisfy the line-count guideline.</rule>
+        </files_and_folders>
+
+        <functions_and_methods>
+            <rule>Prefer functions and methods under 30 lines.</rule>
+            <exception>Exceed 30 lines when extracting helpers would make the implementation less clear.</exception>
+            <rule>Extract helpers when they improve readability or isolate reusable logic.</rule>
+            <rule>Keep non-exported helpers private or local when the language supports it.</rule>
+            <rule>Keep helper methods at the bottom of a class when that matches project conventions.</rule>
+            <rule>Use standalone utility functions when a class would add unnecessary complexity.</rule>
+            <rule>Use the Factory pattern when object creation or dependency selection genuinely benefits from it.</rule>
+            <rule>Repositories only handle ORM calls or execute SQLs and return the data. - Repositories shouldn’t know about any DTO, it should return the data as it comes from the ORM. It shouldn't commit.</rule>
+            <rule>Services should contain the core business logic and is responsible for persistence. So services will commit DB changes, but will use Query to get DB data and Repository to mutate DB data.</rule>
+            <rule>Services should return data in DTO formats.</rule>
+        </functions_and_methods>
+
+        <readability>
+            <rule>Use precise and meaningful names.</rule>
+            <rule>Prefer clear code over clever code.</rule>
+            <rule>Use appropriate spacing, formatting, types, and structure.</rule>
+            <rule>Do not introduce abstractions that hide simple behavior without a clear benefit.</rule>
+        </readability>
+
+        <comments>
+            <rule>Comments must provide information needed to understand implementation logic.</rule>
+            <rule>Comment functions, classes, components, or significant blocks when their purpose or logic is not obvious.</rule>
+            <rule>Explain why non-obvious code exists rather than restating what the code literally does.</rule>
+            <rule>If parameters, return values, side effects, or assumptions are not clear from a definition, document them using the language's conventional format.</rule>
+            <rule>For complex logic, add comments around logical blocks where they materially help a new engineer understand the implementation.</rule>
+            <rule>Do not explain programming-language syntax or obvious library usage.</rule>
+            <rule>CSS and UI components should also be documented when their implementation requires explanation.</rule>
+            <database_columns>
+                <rule>Document database columns unless their purpose is obvious, such as common IDs and timestamps.</rule>
+            </database_columns>
+        </comments>
+
+        <database>
+            <uuid>
+                <rule>Prefer UUID generation by the database.</rule>
+                <exception>The application may generate an ID when multiple objects need the same ID before persistence.</exception>
+            </uuid>
+            <naming>
+                <table_names>snake_case</table_names>
+                <column_names>snake_case</column_names>
+                <code_representation>camelCase</code_representation>
+                <example>
+                    ORM class: AnalyticsInstallation.
+                    Application attribute: createdAt.
+                    Database table: analytics_installation.
+                    Database column: created_at.
+                </example>
+            </naming>
+            <migrations>
+                <rule>A migration should normally change only one table.</rule>
+                <exception>A migration may change multiple tightly coupled tables when a feature requires it.</exception>
+            </migrations>
+        </database>
+
+        <environment_variables>
+            <rule>Group related environment variables together.</rule>
+            <rule>Add comments describing non-obvious variable groups.</rule>
+            <rule>Keep common variables at the appropriate top-level scope and application-specific variables within their application.</rule>
+            <rule>Do not store versions, package names, service names, titles, or static software metadata in environment variables.</rule>
+            <rule>Store deployment-independent configuration in configuration files.</rule>
+            <rule>Secret values should appear at the bottom of example environment files.</rule>
+            <rule>Dependent variables must be conditionally validated based on their controlling variable.</rule>
+            <example>
+                If ML_EXPORT_ENABLED=false, ML_EXPORT_SCHEDULE_CRON,
+                ML_EXPORT_BATCH_SIZE, and other ML_EXPORT_* values should
+                not be required.
+            </example>
+            <example_files>
+                <rule>Create .env.local.example and .env.production.example when environment files are used.</rule>
+                <rule>.env.local.example should be usable as the basis for local development.</rule>
+                <rule>.env.production.example should contain dummy values or descriptions, never real secrets.</rule>
+                <rule>In monorepos, include the application name in environment example filenames.</rule>
+                <rule>Deployment systems must preserve separation between environment files instead of merging unrelated production variables.</rule>
+            </example_files>
+        </environment_variables>
+
+        <logging>
+            <rule>Log every meaningful operation.</rule>
+            <rule>Logs must contain enough context to diagnose failures and trace important operations.</rule>
+            <rule>Never log passwords, API keys, tokens, private keys, or other sensitive values.</rule>
+        </logging>
+
+        <formatting>
+            <rule>Run the project's configured formatter after modifying code.</rule>
+            <rule>Do not introduce a new formatter solely to satisfy this guideline.</rule>
+        </formatting>
+
+        <configuration>
+            <rule>Keep configuration in the project's designated config location.</rule>
+            <rule>Keep deployment-independent configuration out of environment variables.</rule>
+            <rule>Store versions, package names, service names, titles, and software metadata in configuration files.</rule>
+        </configuration>
+
+        <design>
+            <rule>Use Tailwind when Tailwind is part of the project's frontend stack.</rule>
+            <rule>Use global design tokens or variables for repeated colors, typography, spacing, and other design values.</rule>
+        </design>
+
+        <documentation>
+            <rule>Update documentation in /docs when changes affect architecture, behavior, APIs, configuration, deployment, or developer workflows.</rule>
+            <rule>Do not create documentation links that depend on fragile source-file paths when the paths can change.</rule>
+            <rule>Prefer stable conceptual documentation over implementation-path documentation.</rule>
+        </documentation>
+
+        <testing>
+            <rule>Test observable behavior rather than implementation details.</rule>
+            <rule>Write tests for meaningful API endpoints and domain or business logic.</rule>
+            <rule>Do not create isolated tests for trivial helpers when their behavior is adequately covered by larger tests.</rule>
+            <api_tests>
+                <rule>Verify response behavior, relevant database changes, and important business behavior.</rule>
+            </api_tests>
+            <assertions>
+                <rule>Assertions should clearly express the behavior being verified.</rule>
+                <rule>Document complex assertions when their purpose or tested behavior is not obvious.</rule>
+            </assertions>
+        </testing>
+
+    </universal_rules>
+
+
+    <!-- ================================================================
+         PROJECT STRUCTURE EXAMPLES
+         ================================================================
+         These examples are references only.
+
+         Do not force these structures onto a project unless the
+         corresponding framework/architecture is active.
+         ================================================================ -->
+
+    <architecture_examples>
+
+        <django_structure>
+
+            <rule>
+                The following is the recommended Django structure when
+                the Django technology profile is active.
+            </rule>
+
+            <structure>
+                apps/
+                    accounts/
+                    customers/
+                    dashboard/
+                    documents/
+                    passports/
+                    payments/
+                    tickets/
+                    visas/
+
+                common/
+                    exceptions.py
+                    mixins/
+                    models/
+                    pagination.py
+                    permissions/
+                    utils/
+
+                config/
+                    asgi.py
+                    celery.py
+                    settings/
+                    urls.py
+                    wsgi.py
+
+                docs/
+
+                Dockerfile
+                entrypoint.sh
+                main.py
+                manage.py
+                pyproject.toml
+                pytest.ini
+                README.md
+
+                requirements/
+                    base.txt
+                    dev.txt
+                    prod.txt
+
+                tests/
+                    accounts/
+                    customers/
+                    dashboard/
+                    factories.py
+                    passports/
+                    payments/
+                    tickets/
+                    visas/
+
+                uv.lock
+            </structure>
+
+        </django_structure>
+
+
+        <onion_structure>
+
+            <rule>
+                The following is an example Onion Architecture
+                structure.
+
+                Adapt it to the actual project rather than blindly
+                copying it.
+            </rule>
+
+            <structure>
+
+                src/
+                    main.py
+
+                    modules/
+                        users/
+                            domain/
+                                entities/
+                                value_objects/
+                                exceptions.py
+                                services.py
+                                repositories.py
+
+                            application/
+                                commands/
+                                queries/
+                                dto.py
+                                interfaces.py
+                                exceptions.py
+
+                            infrastructure/
+                                persistence/
+                                integrations/
+                                tasks/
+                                cache.py
+
+                            presentation/
+                                api/
+                                    v1/
+                                        router.py
+                                        schemas.py
+                                        dependencies.py
+
+                        orders/
+                            domain/
+                            application/
+                            infrastructure/
+                            presentation/
+
+                        notifications/
+                            domain/
+                            application/
+                            infrastructure/
+                            presentation/
+
+                    shared/
+                        domain/
+                            entity.py
+                            value_object.py
+                            events.py
+                            exceptions.py
+
+                        application/
+                            command.py
+                            query.py
+                            result.py
+                            interfaces/
+
+                        infrastructure/
+                            background_jobs/
+                            cache/
+                            integrations/
+                            logging/
+                            persistence/
+                            security/
+                            telemetry/
+                            tenancy/
+
+                    bootstrap/
+                        application.py
+                        dependencies.py
+                        lifecycle.py
+                        middleware.py
+                        routes.py
+
+                    config/
+                        settings.py
+                        database.py
+                        logging.py
+                        telemetry.py
+
+                tests/
+                    unit/
+                    integration/
+                    functional/
+                    fixtures/
+                    conftest.py
+
+            </structure>
+
+        </onion_structure>
+
+    </architecture_examples>
+
+
+    <implementation_workflow>
+        <step order="1">Read the task requirements.</step>
+        <step order="2">Inspect the existing implementation and project structure.</step>
+        <step order="3">Read project.xml and identify enabled technology, framework, and architecture rules.</step>
+        <step order="4">Implement the smallest clean change that satisfies the task.</step>
+        <step order="5">Preserve existing conventions unless they conflict with a higher-priority rule.</step>
+        <step order="6">Avoid unrelated refactoring.</step>
+        <step order="7">Run applicable formatting, linting, type checking, and tests.</step>
+        <step order="8">Update documentation when required.</step>
+        <step order="9">Verify logging, security, database, and architectural constraints for changed code.</step>
+    </implementation_workflow>
+
+    <non_applicability>
+        <rule>
+            A rule is inactive when its technology, framework, or architecture
+            is not enabled by project.xml.
+        </rule>
+        <rule>
+            Never introduce a dependency, directory structure, package,
+            architectural layer, or design pattern solely because an inactive
+            rule exists in the repository.
+        </rule>
+    </non_applicability>
+
+</ai_coding_guidelines>

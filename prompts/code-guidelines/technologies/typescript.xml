@@ -1,0 +1,167 @@
+
+        <technology name="javascript">
+            <rule>
+                Follow the existing JavaScript style and project
+                conventions unless explicitly overridden by the task.
+            </rule>
+        </technology>
+
+        <technology name="typescript">
+            <rule>
+                Prefer strong and explicit types at application
+                boundaries.
+            </rule>
+
+            <rule>
+                Avoid using any unless there is a clear justification.
+            </rule>
+
+            <rule>
+                Follow the project's configured TypeScript compiler
+                and linting rules.
+            </rule>
+        </technology>
+
+
+
+
+
+    <!-- ================================================================
+         ARCHITECTURES
+         Apply only when selected in project.xml.
+         ================================================================ -->
+
+    <architectures>
+
+
+
+    <!-- ================================================================
+         DOCUMENTATION
+         ================================================================ -->
+
+    <documentation>
+
+        <rule>
+            Write and update documentation in the /docs folder for
+            changes that affect architecture, behavior, APIs,
+            configuration, deployment, or developer workflows.
+        </rule>
+
+        <rule>
+            Do not link documentation directly to source files when
+            the referenced file paths are likely to change.
+        </rule>
+
+        <rule>
+            Documentation should describe stable concepts rather than
+            fragile implementation paths whenever possible.
+        </rule>
+
+    </documentation>
+
+
+    <!-- ================================================================
+         TESTING
+         ================================================================ -->
+
+    <testing>
+
+        <strategy>
+
+            <rule>
+                Tests should verify observable behavior rather than
+                implementation details.
+            </rule>
+
+            <rule>
+                Write tests for API endpoints and meaningful domain
+                or business logic.
+            </rule>
+
+            <rule>
+                Do not write isolated tests for trivial helper
+                functions when their behavior is already adequately
+                covered by a larger test.
+            </rule>
+
+        </strategy>
+
+        <api_tests>
+
+            <rule>
+                API endpoint tests should verify the response,
+                relevant database changes, and important business
+                behavior.
+            </rule>
+
+        </api_tests>
+
+        <assertions>
+
+            <rule>
+                Assertions should be clear about the behavior they
+                are verifying.
+            </rule>
+
+            <rule>
+                Add comments to complex test assertions when a future
+                engineer may need to understand which file or method
+                behavior is being verified.
+            </rule>
+
+        </assertions>
+
+    </testing>
+
+
+
+    <!-- ================================================================
+         FINAL IMPLEMENTATION RULE
+         ================================================================ -->
+
+    <implementation_behavior>
+
+        <rule>
+            Before modifying code, determine the project's language,
+            framework, architecture, database, and existing conventions.
+        </rule>
+
+        <rule>
+            Apply only the rules relevant to the detected project
+            configuration.
+        </rule>
+
+        <rule>
+            Do not introduce an architectural pattern solely because
+            it exists in this guideline.
+
+            Follow the architecture selected for the project.
+        </rule>
+
+        <rule>
+            Do not refactor unrelated code merely to make it conform
+            to these guidelines unless the task requires such a change
+            or the existing code prevents correct implementation.
+        </rule>
+
+        <rule>
+            Prefer the smallest clean change that fully satisfies the
+            task while preserving architectural consistency.
+        </rule>
+
+        <rule>
+            When an existing project convention conflicts with these
+            guidelines, follow the rule-precedence hierarchy and avoid
+            unnecessary broad refactoring.
+        </rule>
+
+        <rule>
+            Before completing the task, verify formatting, tests,
+            documentation requirements, logging requirements, and
+            architectural constraints that are applicable to the
+            changed code.
+        </rule>
+
+    </implementation_behavior>
+
+</coding_guidelines>

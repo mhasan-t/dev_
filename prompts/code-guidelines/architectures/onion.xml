@@ -1,0 +1,65 @@
+
+        <!-- ============================================================
+             ONION ARCHITECTURE
+             ============================================================ -->
+
+        <architecture name="onion">
+
+            <principle>
+                Dependencies should point inward toward the domain and
+                application core.
+            </principle>
+
+            <layers>
+
+                <domain>
+                    <responsibilities>
+                        <item>Domain entities</item>
+                        <item>Value objects</item>
+                        <item>Domain exceptions</item>
+                        <item>Domain services</item>
+                        <item>Domain repository abstractions</item>
+                    </responsibilities>
+                </domain>
+
+                <application>
+                    <responsibilities>
+                        <item>Application services</item>
+                        <item>Commands</item>
+                        <item>Queries</item>
+                        <item>DTOs</item>
+                        <item>Application interfaces</item>
+                        <item>Application exceptions</item>
+                    </responsibilities>
+                </application>
+
+                <infrastructure>
+                    <responsibilities>
+                        <item>ORM models</item>
+                        <item>Repository implementations</item>
+                        <item>Database persistence</item>
+                        <item>External integrations</item>
+                        <item>Background tasks</item>
+                        <item>Caching</item>
+                        <item>Security integrations</item>
+                        <item>Telemetry</item>
+                    </responsibilities>
+                </infrastructure>
+
+                <presentation>
+                    <responsibilities>
+                        <item>HTTP routers</item>
+                        <item>Request/response schemas</item>
+                        <item>Dependencies</item>
+                        <item>API controllers</item>
+                    </responsibilities>
+                </presentation>
+
+            </layers>
+
+            <dependency_rule>
+                Inner layers must not depend on outer infrastructure
+                or presentation implementations.
+            </dependency_rule>
+
+        </architecture>

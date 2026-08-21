@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project_profile>
+
+    <!-- Change this file for each project. -->
+
+    <project>
+        <name>PROJECT_NAME</name>
+        <language>typescript</language>
+        <runtime>node</runtime>
+        <framework>express</framework>
+        <architecture>modular</architecture>
+        <database>postgresql</database>
+        <package_manager>npm</package_manager>
+    </project>
+
+    <enabled_rules>
+        <!-- Technology rule files -->
+        <technology>typescript</technology>
+
+        <!-- Framework rule files -->
+        <framework>express</framework>
+
+        <!-- Architecture rule files -->
+        <architecture>modular</architecture>
+
+        <!-- Enable only if the project actually uses this pattern. -->
+        <!-- <architecture>cqrs</architecture> -->
+        <!-- <architecture>onion</architecture> -->
+    </enabled_rules>
+
+    <project_overrides>
+        <!--
+        Add only rules that are genuinely specific to this project.
+
+        Example:
+        <rule name="api_versioning">
+            All public APIs must use /v1.
+        </rule>
+        -->
+    </project_overrides>
+
+</project_profile>

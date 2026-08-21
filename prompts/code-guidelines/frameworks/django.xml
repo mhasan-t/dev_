@@ -1,0 +1,65 @@
+
+        <!-- ============================================================
+             DJANGO
+             ============================================================ -->
+
+        <technology name="django">
+
+            <architecture>
+                <rule>
+                    Follow Django's app-based project structure.
+                </rule>
+
+                <rule>
+                    Do not apply Onion Architecture or Clean Architecture
+                    to Django projects unless the project explicitly
+                    overrides this rule.
+                </rule>
+            </architecture>
+
+            <viewsets>
+                <rule>
+                    ViewSets should validate requests and call services.
+                </rule>
+
+                <rule>
+                    ViewSets should contain no business logic.
+                </rule>
+            </viewsets>
+
+            <models>
+                <rule>
+                    Each domain database model should have its own Django
+                    app when the domain is sufficiently independent.
+                </rule>
+            </models>
+
+            <managers>
+                <rule>
+                    Use custom Django managers to encapsulate common
+                    and core database queries and table-level
+                    pre-filtering operations.
+                </rule>
+            </managers>
+
+            <settings>
+                <rule>
+                    Split Django settings into multiple files.
+                </rule>
+
+                <rule>
+                    Group related settings together.
+                </rule>
+
+                <rule>
+                    Maintain separate development, production, and test
+                    settings.
+                </rule>
+
+                <rule>
+                    Use a base settings layer for settings shared by
+                    multiple environments.
+                </rule>
+            </settings>
+
+        </technology>

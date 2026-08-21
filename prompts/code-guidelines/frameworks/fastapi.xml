@@ -1,0 +1,76 @@
+
+
+
+        <!-- ============================================================
+             FASTAPI
+             ============================================================ -->
+
+        <technology name="fastapi">
+
+            <architecture>
+                <rule>
+                    Follow Onion Architecture.
+                </rule>
+            </architecture>
+
+            <routers>
+                <rule>
+                    Routers should define routes and connect them to
+                    controllers.
+
+                    Routers should contain no business logic.
+                </rule>
+            </routers>
+
+            <controllers>
+                <rule>
+                    Controllers should validate requests and call
+                    services.
+
+                    Controllers should contain no business logic.
+                </rule>
+            </controllers>
+
+            <dependencies>
+                <rule>
+                    Dependency methods should live in their own files.
+                </rule>
+            </dependencies>
+
+            <authorization>
+                <rule>
+                    For authorization, use Policy classes similar to
+                    the policy pattern used by Ruby on Rails.
+                </rule>
+            </authorization>
+
+            <naming>
+                <rule>
+                    Use filenames such as _router.py and _controller.py
+                    where this convention is adopted by the project.
+                </rule>
+            </naming>
+
+            <request_state>
+
+                <authentication>
+                    <rule>
+                        When user authentication exists,
+                        request.state.user should contain the
+                        authenticated user information.
+                    </rule>
+                </authentication>
+
+                <multi_tenancy>
+                    <rule>
+                        When multi-tenancy exists,
+                        request.state.tenant should contain the
+                        current tenant information.
+                    </rule>
+                </multi_tenancy>
+
+            </request_state>
+
+        </technology>
+
+    </technologies>
