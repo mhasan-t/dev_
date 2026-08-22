@@ -127,6 +127,7 @@
                 ML_EXPORT_BATCH_SIZE, and other ML_EXPORT_* values should
                 not be required.
             </example>
+            <rule>DO NOT RENAME ENVIRONMENT VARIABLES. The same name should be consistent in `.env` file, `dockerfile`, `docker-compose` files, `kubernetes` config files, and inside the application.</rule>
             <example_files>
                 <rule>Create .env.local.example and .env.production.example when environment files are used.</rule>
                 <rule>.env.local.example should be usable as the basis for local development.</rule>
@@ -180,6 +181,98 @@
                 <rule>Document complex assertions when their purpose or tested behavior is not obvious.</rule>
             </assertions>
         </testing>
+
+        <developer_experience>
+            <rule>Use `Makefile` for spinning up dev servers, stopping, cleaning, and inspecting containers, data, and servers.</rule>
+            <example_makefile>
+            ```
+                # Core development services never include Shopify or observability containers.
+                DEV_COMPOSE = docker compose --env-file .env -f docker-compose.dev.yaml
+                DEV_OBSERVABILITY_COMPOSE = $(DEV_COMPOSE) --profile observability
+
+                # Everything after the first Make goal is treated as positional arguments.
+                ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+
+                .PHONY: dev test lint autogen_migrations apply_alembic manual_test prepare-env up observability-up observability-down down logs observability-logs migrate revision psql app_bash python clear_shopify_sessions
+
+                dev:
+                    cd size_api && uv run uvicorn src.presentation.api.v1.main:app --reload --log-level debug
+
+                test:
+                    cd size_api && uv run pytest
+
+                lint:
+                    cd size_api && uv run ruff check .
+
+                autogen_migrations:
+                    cd size_api && uv run alembic revision --autogenerate -m "$(m)"
+
+                apply_alembic:
+                    cd size_api && uv run alembic upgrade head
+
+                manual_test:
+                    cd size_api && uv run python -m tests.manual_test
+
+                # Create local configuration once while preserving every developer override.
+                prepare-env:
+                    @test -f .env || cp .env.local.example .env
+                    @test -f size_api/.env || cp size_api/.env.local.example size_api/.env
+                    @test -f shopify_app/.env || cp shopify_app/.env.local.example shopify_app/.env
+                    @test -f dashboard/.env || cp dashboard/.env.local.example dashboard/.env
+                    @mkdir -p shopify_app/.shopify/dev-bundle
+
+                compose:
+                    $(DEV_COMPOSE) $(ARGS)
+
+                up-f: prepare-env
+                    TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up --build --remove-orphans $(ARGS)
+
+                up: prepare-env
+                    TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up -d --build --remove-orphans $(ARGS)
+
+                # Start core and observability services under the same Compose project.
+                observability-up: prepare-env
+                    TELEMETRY_TRACES_ENABLED=true $(DEV_OBSERVABILITY_COMPOSE) up --build --remove-orphans $(ARGS)
+
+                # Return the project to core-only mode and remove observability containers.
+                observability-down: prepare-env
+                    $(DEV_OBSERVABILITY_COMPOSE) down --remove-orphans
+                    TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up --build --remove-orphans $(ARGS)
+
+                down:
+                    $(DEV_OBSERVABILITY_COMPOSE) down --remove-orphans $(ARGS)
+
+                logs:
+                    $(DEV_COMPOSE) logs --follow $(ARGS)
+
+                observability-logs:
+                    $(DEV_OBSERVABILITY_COMPOSE) logs --follow $(ARGS)
+
+                migrate:
+                    $(DEV_COMPOSE) run --rm size_api-migrate $(ARGS)
+
+                revision:
+                    $(DEV_COMPOSE) exec api uv run --no-sync alembic revision --autogenerate -m "$(m)"
+
+                psql:
+                    $(DEV_COMPOSE) exec postgres sh -c 'psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' $(ARGS)
+
+                app_bash:
+                    $(DEV_COMPOSE) exec api bash $(ARGS)
+
+                python:
+                    $(DEV_COMPOSE) exec api uv run --no-sync python $(ARGS)
+
+                clear_shopify_sessions:
+                    $(DEV_COMPOSE) exec postgres sh -c 'psql -U "$$POSTGRES_USER" -d "$$SHOPIFY_DB_NAME" -c '\''DELETE FROM "Session" WHERE shop = '\''\''${shop}'\''\'';'\'''
+
+
+                # Accept positional arguments as Make goals.
+                %:
+                    @:
+            ```
+            </example_makefile>
+        </developer_experience>
 
     </universal_rules>
 
