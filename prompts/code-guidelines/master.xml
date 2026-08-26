@@ -47,6 +47,9 @@
             <rule>Prefer small, focused modules, classes, and functions.</rule>
             <rule>Keep code reusable without introducing unnecessary abstractions.</rule>
             <rule>Maintain a single source of truth for each piece of information.</rule>
+            <rule>Use global exception handlers.</rule>
+            <rule>Global exception handlers should catch exceptions to log and return API response.</rule>
+            <rule>Raise exceptions instead of printing errors logs and returning API response manually.</rule>
         </architecture_and_design>
 
         <files_and_folders>
@@ -138,6 +141,9 @@
         </environment_variables>
 
         <logging>
+            <rule>Use a global logger instance.</rule>
+            <rule>Globally catch and log all raised errors.</rule>
+            <rule>Raise exceptions to be catched by the global logger middleware instead of writing `try...catch...` or `logger.error...` manually.</rule>
             <rule>Log every meaningful operation.</rule>
             <rule>Logs must contain enough context to diagnose failures and trace important operations.</rule>
             <rule>Never log passwords, API keys, tokens, private keys, or other sensitive values.</rule>
