@@ -1,0 +1,229 @@
+
+
+
+<!-- ============================================================
+        NEXT.JS
+============================================================ -->
+
+<technology name="next.js">
+
+    <architecture>
+        <rule>
+            Follow Onion Architecture.
+        </rule>
+    </architecture>
+
+    <routers>
+        <rule>
+            Routers should define routes and connect them to
+            controllers.
+
+            Routers should contain no business logic.
+        </rule>
+    </routers>
+
+    <controllers>
+        <rule>
+            Controllers should validate requests and call
+            services.
+
+            Controllers should contain no business logic.
+        </rule>
+    </controllers>
+
+    <dependencies>
+        <rule>
+            Dependency methods should live in their own files.
+        </rule>
+    </dependencies>
+
+    <authorization>
+        <rule>
+            For authorization, use Policy classes similar to
+            the policy pattern used by Ruby on Rails.
+        </rule>
+    </authorization>
+
+    <naming>
+        <rule>
+            Use filenames such as _router.py and _controller.py
+            where this convention is adopted by the project.
+        </rule>
+    </naming>
+
+    <request_state>
+
+        <authentication>
+            <rule>
+                When user authentication exists,
+                request.state.user should contain the
+                authenticated user information.
+            </rule>
+        </authentication>
+
+        <multi_tenancy>
+            <rule>
+                When multi-tenancy exists,
+                request.state.tenant should contain the
+                current tenant information.
+            </rule>
+        </multi_tenancy>
+
+    </request_state>
+
+</technology>
+
+
+    <architecture_examples>
+        <onion_structure>
+
+            <rule>
+                The following is an example Onion Architecture
+                structure.
+
+                Adapt it to the actual project rather than blindly
+                copying it.
+            </rule>
+
+            <structure>
+            ```
+                my-app/
+                ├── src/
+                │   ├── app/
+                │   │   ├── (marketing)/
+                │   │   │   ├── page.tsx
+                │   │   │   ├── pricing/
+                │   │   │   │   └── page.tsx
+                │   │   │   └── about/
+                │   │   │       └── page.tsx
+                │   │   │
+                │   │   ├── (app)/
+                │   │   │   ├── layout.tsx
+                │   │   │   ├── dashboard/
+                │   │   │   │   └── page.tsx
+                │   │   │   ├── settings/
+                │   │   │   │   └── page.tsx
+                │   │   │   └── projects/
+                │   │   │       ├── page.tsx
+                │   │   │       └── [projectId]/
+                │   │   │           └── page.tsx
+                │   │   │
+                │   │   ├── api/
+                │   │   │   └── webhooks/
+                │   │   │       └── stripe/
+                │   │   │           └── route.ts
+                │   │   │
+                │   │   ├── layout.tsx
+                │   │   ├── error.tsx
+                │   │   ├── not-found.tsx
+                │   │   ├── loading.tsx
+                │   │   └── globals.css
+                │   │
+                │   ├── features/
+                │   │   ├── auth/
+                │   │   │   ├── components/
+                │   │   │   │   ├── login-form.tsx
+                │   │   │   │   └── signup-form.tsx
+                │   │   │   ├── hooks/
+                │   │   │   │   └── use-auth.ts
+                │   │   │   ├── actions/
+                │   │   │   │   └── login.ts
+                │   │   │   ├── api/
+                │   │   │   │   └── auth-api.ts
+                │   │   │   ├── schemas/
+                │   │   │   │   └── auth-schema.ts
+                │   │   │   ├── types.ts
+                │   │   │   └── index.ts
+                │   │   │
+                │   │   ├── projects/
+                │   │   │   ├── components/
+                │   │   │   │   ├── project-card.tsx
+                │   │   │   │   ├── project-list.tsx
+                │   │   │   │   └── project-form.tsx
+                │   │   │   ├── hooks/
+                │   │   │   │   └── use-projects.ts
+                │   │   │   ├── actions/
+                │   │   │   │   ├── create-project.ts
+                │   │   │   │   └── delete-project.ts
+                │   │   │   ├── api/
+                │   │   │   │   └── projects-api.ts
+                │   │   │   ├── schemas/
+                │   │   │   │   └── project-schema.ts
+                │   │   │   ├── types.ts
+                │   │   │   └── index.ts
+                │   │   │
+                │   │   └── billing/
+                │   │       ├── components/
+                │   │       ├── hooks/
+                │   │       ├── actions/
+                │   │       ├── api/
+                │   │       ├── schemas/
+                │   │       ├── types.ts
+                │   │       └── index.ts
+                │   │
+                │   ├── components/
+                │   │   ├── ui/
+                │   │   │   ├── button.tsx
+                │   │   │   ├── dialog.tsx
+                │   │   │   ├── input.tsx
+                │   │   │   └── dropdown.tsx
+                │   │   ├── layout/
+                │   │   │   ├── header.tsx
+                │   │   │   ├── sidebar.tsx
+                │   │   │   └── footer.tsx
+                │   │   └── providers/
+                │   │       ├── query-provider.tsx
+                │   │       └── theme-provider.tsx
+                │   │
+                │   ├── lib/
+                │   │   ├── auth/
+                │   │   │   ├── session.ts
+                │   │   │   └── permissions.ts
+                │   │   ├── db/
+                │   │   │   ├── client.ts
+                │   │   │   └── queries.ts
+                │   │   ├── http/
+                │   │   │   └── client.ts
+                │   │   ├── logger/
+                │   │   │   └── index.ts
+                │   │   └── utils/
+                │   │       ├── cn.ts
+                │   │       └── format-date.ts
+                │   │
+                │   ├── config/
+                │   │   ├── site.ts
+                │   │   └── navigation.ts
+                │   │
+                │   ├── hooks/
+                │   │   ├── use-debounce.ts
+                │   │   └── use-media-query.ts
+                │   │
+                │   ├── types/
+                │   │   ├── api.ts
+                │   │   └── common.ts
+                │   │
+                │   └── constants/
+                │       └── index.ts
+                │
+                ├── public/
+                │   ├── images/
+                │   ├── icons/
+                │   └── fonts/
+                │
+                ├── tests/
+                │   ├── unit/
+                │   ├── integration/
+                │   └── e2e/
+                │
+                ├── .env.example
+                ├── eslint.config.mjs
+                ├── next.config.ts
+                ├── package.json
+                ├── tsconfig.json
+                └── README.md
+            ```
+            </structure>
+
+        </onion_structure>
+
+    </architecture_examples>
