@@ -42,6 +42,7 @@
 
         <architecture_and_design>
             <rule>Use modular architecture appropriate to the project.</rule>
+            <rule>Organize business logic by domain</rule>
             <rule>Keep responsibilities cohesive and boundaries explicit.</rule>
             <rule>Keep unrelated functionality separated.</rule>
             <rule>Prefer small, focused modules, classes, and functions.</rule>
@@ -60,6 +61,8 @@
             <rule>Prefer files under 300 lines.</rule>
             <exception>Exceed 300 lines when splitting would reduce cohesion or readability.</exception>
             <rule>Do not split files merely to satisfy the line-count guideline.</rule>
+            <rule>Don't organize files according to what kind of code they contain. Organize them according to what needs to change together. </rule>
+            <rule>Don't overfactor the files. If a file only contains 5 lines of code, it might be overfactored.</rule>
         </files_and_folders>
 
         <functions_and_methods>
