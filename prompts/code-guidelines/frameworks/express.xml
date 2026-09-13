@@ -1,22 +1,21 @@
+<technology name="express.js">
 
-        <technology name="express.js">
+  <routers>
+    <rule>
+      Routers should only define routes and connect those
+      routes to controllers.
 
-            <routers>
-                <rule>
-                    Routers should only define routes and connect those
-                    routes to controllers.
+      Routers should contain no business logic.
+    </rule>
+  </routers>
 
-                    Routers should contain no business logic.
-                </rule>
-            </routers>
+  <controllers>
+    <rule>
+      Controllers should validate the request and call
+      appropriate services.
 
-            <controllers>
-                <rule>
-                    Controllers should validate the request and call
-                    appropriate services.
+      Controllers should contain no business logic.
+    </rule>
+  </controllers>
 
-                    Controllers should contain no business logic.
-                </rule>
-            </controllers>
-
-        </technology>
+</technology>

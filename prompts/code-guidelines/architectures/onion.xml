@@ -1,168 +1,168 @@
 
-        <!-- ============================================================
+<!-- ============================================================
              ONION ARCHITECTURE
              ============================================================ -->
 
 <architecture name="onion">
 
-    <principle>
-        Dependencies should point inward toward the domain and
-        application core.
-    </principle>
+  <principle>
+    Dependencies should point inward toward the domain and
+    application core.
+  </principle>
 
-    <layers>
+  <layers>
 
-        <domain>
-            <responsibilities>
-                <item>Domain entities</item>
-                <item>Value objects</item>
-                <item>Domain exceptions</item>
-                <item>Domain services</item>
-                <item>Domain repository abstractions</item>
-            </responsibilities>
-        </domain>
+    <domain>
+      <responsibilities>
+        <item>Domain entities</item>
+        <item>Value objects</item>
+        <item>Domain exceptions</item>
+        <item>Domain services</item>
+        <item>Domain repository abstractions</item>
+      </responsibilities>
+    </domain>
 
-        <application>
-            <responsibilities>
-                <item>Application services</item>
-                <item>Commands</item>
-                <item>Queries</item>
-                <item>DTOs</item>
-                <item>Application interfaces</item>
-                <item>Application exceptions</item>
-            </responsibilities>
-        </application>
+    <application>
+      <responsibilities>
+        <item>Application services</item>
+        <item>Commands</item>
+        <item>Queries</item>
+        <item>DTOs</item>
+        <item>Application interfaces</item>
+        <item>Application exceptions</item>
+      </responsibilities>
+    </application>
 
-        <infrastructure>
-            <responsibilities>
-                <item>ORM models</item>
-                <item>Repository implementations</item>
-                <item>Database persistence</item>
-                <item>External integrations</item>
-                <item>Background tasks</item>
-                <item>Caching</item>
-                <item>Security integrations</item>
-                <item>Telemetry</item>
-            </responsibilities>
-        </infrastructure>
+    <infrastructure>
+      <responsibilities>
+        <item>ORM models</item>
+        <item>Repository implementations</item>
+        <item>Database persistence</item>
+        <item>External integrations</item>
+        <item>Background tasks</item>
+        <item>Caching</item>
+        <item>Security integrations</item>
+        <item>Telemetry</item>
+      </responsibilities>
+    </infrastructure>
 
-        <presentation>
-            <responsibilities>
-                <item>HTTP routers</item>
-                <item>Request/response schemas</item>
-                <item>Dependencies</item>
-                <item>API controllers</item>
-            </responsibilities>
-        </presentation>
+    <presentation>
+      <responsibilities>
+        <item>HTTP routers</item>
+        <item>Request/response schemas</item>
+        <item>Dependencies</item>
+        <item>API controllers</item>
+      </responsibilities>
+    </presentation>
 
-    </layers>
+  </layers>
 
-    <dependency_rule>
-        Inner layers must not depend on outer infrastructure
-        or presentation implementations.
-    </dependency_rule>
+  <dependency_rule>
+    Inner layers must not depend on outer infrastructure
+    or presentation implementations.
+  </dependency_rule>
 
-    <structure_example>
+  <structure_example>
 
-        <rule>
-            The following is an example Onion Architecture
-            structure.
+    <rule>
+      The following is an example Onion Architecture
+      structure.
 
-            Adapt it to the actual project rather than blindly
-            copying it.
-        </rule>
+      Adapt it to the actual project rather than blindly
+      copying it.
+    </rule>
 
-        <structure>
+    <structure>
 
-            src/
-                main.py
+      src/
+      main.py
 
-                modules/
-                    users/
-                        domain/
-                            entities/
-                            value_objects/
-                            exceptions.py
-                            services.py
-                            repositories.py
+      modules/
+      users/
+      domain/
+      entities/
+      value_objects/
+      exceptions.py
+      services.py
+      repositories.py
 
-                        application/
-                            commands/
-                            queries/
-                            dto.py
-                            interfaces.py
-                            exceptions.py
+      application/
+      commands/
+      queries/
+      dto.py
+      interfaces.py
+      exceptions.py
 
-                        infrastructure/
-                            persistence/
-                            integrations/
-                            tasks/
-                            cache.py
+      infrastructure/
+      persistence/
+      integrations/
+      tasks/
+      cache.py
 
-                        presentation/
-                            api/
-                                v1/
-                                    router.py
-                                    schemas.py
-                                    dependencies.py
+      presentation/
+      api/
+      v1/
+      router.py
+      schemas.py
+      dependencies.py
 
-                    orders/
-                        domain/
-                        application/
-                        infrastructure/
-                        presentation/
+      orders/
+      domain/
+      application/
+      infrastructure/
+      presentation/
 
-                    notifications/
-                        domain/
-                        application/
-                        infrastructure/
-                        presentation/
+      notifications/
+      domain/
+      application/
+      infrastructure/
+      presentation/
 
-                shared/
-                    domain/
-                        entity.py
-                        value_object.py
-                        events.py
-                        exceptions.py
+      shared/
+      domain/
+      entity.py
+      value_object.py
+      events.py
+      exceptions.py
 
-                    application/
-                        command.py
-                        query.py
-                        result.py
-                        interfaces/
+      application/
+      command.py
+      query.py
+      result.py
+      interfaces/
 
-                    infrastructure/
-                        background_jobs/
-                        cache/
-                        integrations/
-                        logging/
-                        persistence/
-                        security/
-                        telemetry/
-                        tenancy/
+      infrastructure/
+      background_jobs/
+      cache/
+      integrations/
+      logging/
+      persistence/
+      security/
+      telemetry/
+      tenancy/
 
-                bootstrap/
-                    application.py
-                    dependencies.py
-                    lifecycle.py
-                    middleware.py
-                    routes.py
+      bootstrap/
+      application.py
+      dependencies.py
+      lifecycle.py
+      middleware.py
+      routes.py
 
-                config/
-                    settings.py
-                    database.py
-                    logging.py
-                    telemetry.py
+      config/
+      settings.py
+      database.py
+      logging.py
+      telemetry.py
 
-            tests/
-                unit/
-                integration/
-                functional/
-                fixtures/
-                conftest.py
+      tests/
+      unit/
+      integration/
+      functional/
+      fixtures/
+      conftest.py
 
-        </structure>
+    </structure>
 
-    </structure_example>
+  </structure_example>
 
 </architecture>

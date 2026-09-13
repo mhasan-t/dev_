@@ -1,67 +1,67 @@
 <deployment name="docker-compose">
-    <rule>Use Docker Compose for deployment.</rule>
-    <rule>There should only be a single `docker-compose.dev.yaml` and `docker-compose.prod.yaml` entrypoints.</rule>
-    <rule>The rest of the deployment scripts and conf will be in the `/deploy` folder.</rule>
-    <example_deploy_folder>
-        ```
-        ├── deploy
-        │   ├── common
-        │   │   ├── observability
-        │   │   │   ├── alerts.yaml
-        │   │   │   ├── alloy
-        │   │   │   │   ├── self-hosted.alloy
-        │   │   │   │   └── telemetry.alloy
-        │   │   │   ├── grafana
-        │   │   │   │   ├── dashboards
-        │   │   │   │   │   ├── application.json
-        │   │   │   │   │   └── workers.json
-        │   │   │   │   └── provisioning
-        │   │   │   │       ├── dashboards
-        │   │   │   │       │   └── dashboards.yaml
-        │   │   │   │       └── datasources
-        │   │   │   │           └── datasources.yaml
-        │   │   │   ├── loki.yaml
-        │   │   │   └── tempo.yaml
-        │   │   └── postgres
-        │   │       └── init-databases.sh
-        │   ├── dev
-        │   │   ├── compose
-        │   │   │   ├── dashboard.yaml
-        │   │   │   ├── data.yaml
-        │   │   │   ├── landing.yaml
-        │   │   │   ├── observability.yaml
-        │   │   │   └── size_api.yaml
-        │   │   └── observability
-        │   │       ├── alertmanager.yaml
-        │   │       └── prometheus.yaml
-        │   └── prod
-        │       ├── caddy
-        │       │   ├── Caddyfile
-        │       │   └── Caddyfile.observability
-        │       ├── compose
-        │       │   ├── dashboard.yaml
-        │       │   ├── data.yaml
-        │       │   ├── grafana-cloud.yaml
-        │       │   ├── landing.yaml
-        │       │   ├── ml-google-drive.yaml
-        │       │   ├── observability.yaml
-        │       │   ├── proxy.yaml
-        │       │   ├── shopify.yaml
-        │       │   └── size_api.yaml
-        │       ├── grafana-cloud
-        │       │   └── sync-alerts
-        │       ├── observability
-        │       │   ├── alloy
-        │       │   │   └── grafana-cloud.alloy
-        │       │   └── prometheus.yaml
-        │       ├── run-compose
-        │       └── tests
-        │           └── run-compose-test.sh
-        ├── docker-compose.dev.yaml
-        ├── docker-compose.prod.yaml
-        ```
-    </example_deploy_folder>
-
+  <rule>Use Docker Compose for deployment.</rule>
+  <rule>There should only be a single `docker-compose.dev.yaml` and `docker-compose.prod.yaml`
+    entrypoints.</rule>
+  <rule>The rest of the deployment scripts and conf will be in the `/deploy` folder.</rule>
+  <example_deploy_folder>
+    ```
+    ├── deploy
+    │ ├── common
+    │ │ ├── observability
+    │ │ │ ├── alerts.yaml
+    │ │ │ ├── alloy
+    │ │ │ │ ├── self-hosted.alloy
+    │ │ │ │ └── telemetry.alloy
+    │ │ │ ├── grafana
+    │ │ │ │ ├── dashboards
+    │ │ │ │ │ ├── application.json
+    │ │ │ │ │ └── workers.json
+    │ │ │ │ └── provisioning
+    │ │ │ │ ├── dashboards
+    │ │ │ │ │ └── dashboards.yaml
+    │ │ │ │ └── datasources
+    │ │ │ │ └── datasources.yaml
+    │ │ │ ├── loki.yaml
+    │ │ │ └── tempo.yaml
+    │ │ └── postgres
+    │ │ └── init-databases.sh
+    │ ├── dev
+    │ │ ├── compose
+    │ │ │ ├── dashboard.yaml
+    │ │ │ ├── data.yaml
+    │ │ │ ├── landing.yaml
+    │ │ │ ├── observability.yaml
+    │ │ │ └── size_api.yaml
+    │ │ └── observability
+    │ │ ├── alertmanager.yaml
+    │ │ └── prometheus.yaml
+    │ └── prod
+    │ ├── caddy
+    │ │ ├── Caddyfile
+    │ │ └── Caddyfile.observability
+    │ ├── compose
+    │ │ ├── dashboard.yaml
+    │ │ ├── data.yaml
+    │ │ ├── grafana-cloud.yaml
+    │ │ ├── landing.yaml
+    │ │ ├── ml-google-drive.yaml
+    │ │ ├── observability.yaml
+    │ │ ├── proxy.yaml
+    │ │ ├── shopify.yaml
+    │ │ └── size_api.yaml
+    │ ├── grafana-cloud
+    │ │ └── sync-alerts
+    │ ├── observability
+    │ │ ├── alloy
+    │ │ │ └── grafana-cloud.alloy
+    │ │ └── prometheus.yaml
+    │ ├── run-compose
+    │ └── tests
+    │ └── run-compose-test.sh
+    ├── docker-compose.dev.yaml
+    ├── docker-compose.prod.yaml
+    ```
+  </example_deploy_folder>
 
 
 </deployment>

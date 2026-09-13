@@ -1,27 +1,27 @@
 <technology name="python">
 
-            <naming>
-                <rule>
-                    Follow PEP 8 naming conventions.
-                </rule>
-            </naming>
+  <naming>
+    <rule>
+      Follow PEP 8 naming conventions.
+    </rule>
+  </naming>
 
-            <package_management>
-                <rule>
-                    Use uv for Python package management.
-                </rule>
-            </package_management>
+  <package_management>
+    <rule>
+      Use uv for Python package management.
+    </rule>
+  </package_management>
 
-            <environment>
-                <rule>
-                    Use Pydantic for reading and validating environment
-                    variables when the project uses Pydantic.
-                </rule>
+  <environment>
+    <rule>
+      Use Pydantic for reading and validating environment
+      variables when the project uses Pydantic.
+    </rule>
 
-                <rule>
-                    Keep related environment variables in their
-                    appropriate configuration module or file.
-                </rule>
-            </environment>
+    <rule>
+      Keep related environment variables in their
+      appropriate configuration module or file.
+    </rule>
+  </environment>
 
-        </technology>
+</technology>

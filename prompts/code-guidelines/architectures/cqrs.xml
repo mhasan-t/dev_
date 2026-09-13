@@ -1,87 +1,81 @@
+<architecture name="cqrs">
 
+  <rule>
+    Query components are responsible for reading data.
+  </rule>
 
-        <!-- ============================================================
-             CQRS
-             ============================================================ -->
+  <rule>
+    Repository components are responsible for mutating
+    persisted data.
+  </rule>
 
-        <architecture name="cqrs">
+  <rule>
+    No other application component should directly query
+    or mutate database data.
+  </rule>
 
-            <rule>
-                Query components are responsible for reading data.
-            </rule>
+  <queries>
+    <rule>
+      Queries should contain only database-read logic.
+    </rule>
+  </queries>
 
-            <rule>
-                Repository components are responsible for mutating
-                persisted data.
-            </rule>
+  <repositories>
 
-            <rule>
-                No other application component should directly query
-                or mutate database data.
-            </rule>
+    <rule>
+      Repositories should only handle ORM operations or
+      execute SQL and return the resulting data.
+    </rule>
 
-            <queries>
-                <rule>
-                    Queries should contain only database-read logic.
-                </rule>
-            </queries>
+    <rule>
+      Repositories should not know about DTOs.
+    </rule>
 
-            <repositories>
+    <rule>
+      Repositories should return data in the form
+      appropriate to the persistence layer.
+    </rule>
 
-                <rule>
-                    Repositories should only handle ORM operations or
-                    execute SQL and return the resulting data.
-                </rule>
+    <rule>
+      Repositories should not commit transactions.
+    </rule>
 
-                <rule>
-                    Repositories should not know about DTOs.
-                </rule>
+    <rule>
+      Repositories should not contain business logic.
+    </rule>
 
-                <rule>
-                    Repositories should return data in the form
-                    appropriate to the persistence layer.
-                </rule>
+  </repositories>
 
-                <rule>
-                    Repositories should not commit transactions.
-                </rule>
+  <services>
 
-                <rule>
-                    Repositories should not contain business logic.
-                </rule>
+    <rule>
+      Services contain core business logic.
+    </rule>
 
-            </repositories>
+    <rule>
+      Services are responsible for coordinating
+      persistence operations.
+    </rule>
 
-            <services>
+    <rule>
+      Services use Queries to read data.
+    </rule>
 
-                <rule>
-                    Services contain core business logic.
-                </rule>
+    <rule>
+      Services use Repositories to mutate data.
+    </rule>
 
-                <rule>
-                    Services are responsible for coordinating
-                    persistence operations.
-                </rule>
+    <rule>
+      Services are responsible for committing database
+      changes when the project's transaction model
+      requires service-level commits.
+    </rule>
 
-                <rule>
-                    Services use Queries to read data.
-                </rule>
+    <rule>
+      Services should return DTOs at application
+      boundaries when DTOs are part of the project design.
+    </rule>
 
-                <rule>
-                    Services use Repositories to mutate data.
-                </rule>
+  </services>
 
-                <rule>
-                    Services are responsible for committing database
-                    changes when the project's transaction model
-                    requires service-level commits.
-                </rule>
-
-                <rule>
-                    Services should return DTOs at application
-                    boundaries when DTOs are part of the project design.
-                </rule>
-
-            </services>
-
-        </architecture>
+</architecture>

@@ -1,66 +1,66 @@
 <structure_example name="django">
 
-    <django_structure>
+  <django_structure>
 
-        <rule>
-            The following is the recommended Django structure when
-            the Django technology profile is active.
-        </rule>
+    <rule>
+      The following is the recommended Django structure when
+      the Django technology profile is active.
+    </rule>
 
-        <structure>
-            apps/
-                accounts/
-                customers/
-                dashboard/
-                documents/
-                passports/
-                payments/
-                tickets/
-                visas/
+    <structure>
+      apps/
+      accounts/
+      customers/
+      dashboard/
+      documents/
+      passports/
+      payments/
+      tickets/
+      visas/
 
-            common/
-                exceptions.py
-                mixins/
-                models/
-                pagination.py
-                permissions/
-                utils/
+      common/
+      exceptions.py
+      mixins/
+      models/
+      pagination.py
+      permissions/
+      utils/
 
-            config/
-                asgi.py
-                celery.py
-                settings/
-                urls.py
-                wsgi.py
+      config/
+      asgi.py
+      celery.py
+      settings/
+      urls.py
+      wsgi.py
 
-            docs/
+      docs/
 
-            Dockerfile
-            entrypoint.sh
-            main.py
-            manage.py
-            pyproject.toml
-            pytest.ini
-            README.md
+      Dockerfile
+      entrypoint.sh
+      main.py
+      manage.py
+      pyproject.toml
+      pytest.ini
+      README.md
 
-            requirements/
-                base.txt
-                dev.txt
-                prod.txt
+      requirements/
+      base.txt
+      dev.txt
+      prod.txt
 
-            tests/
-                accounts/
-                customers/
-                dashboard/
-                factories.py
-                passports/
-                payments/
-                tickets/
-                visas/
+      tests/
+      accounts/
+      customers/
+      dashboard/
+      factories.py
+      passports/
+      payments/
+      tickets/
+      visas/
 
-            uv.lock
-        </structure>
+      uv.lock
+    </structure>
 
-    </django_structure>
+  </django_structure>
 
 </structure_example>

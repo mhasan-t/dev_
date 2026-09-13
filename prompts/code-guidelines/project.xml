@@ -2,35 +2,26 @@
 
 <project_profile>
 
-    <!-- Change this file for each project. -->
+  <!-- Change this file for each project. -->
 
-    <project>
-        <name>PROJECT_NAME</name>
-        <language>typescript</language>
-        <runtime>node</runtime>
-        <framework>express</framework>
-        <architecture>modular</architecture>
-        <database>postgresql</database>
-        <package_manager>npm</package_manager>
-    </project>
+  <project>
+    <name>PROJECT_NAME</name>
+    <language>typescript</language>
+    <runtime>node</runtime>
+    <framework>express</framework>
+    <architecture>modular</architecture>
+    <database>postgresql</database>
+    <package_manager>npm</package_manager>
+  </project>
 
-    <enabled_rules>
-        <!-- Technology rule files -->
-        <technology>typescript</technology>
+  <enabled_rules>
+    <technology>typescript</technology>
+    <framework>express</framework>
+    <architecture>modular</architecture>
+  </enabled_rules>
 
-        <!-- Framework rule files -->
-        <framework>express</framework>
-
-        <!-- Architecture rule files -->
-        <architecture>modular</architecture>
-
-        <!-- Enable only if the project actually uses this pattern. -->
-        <!-- <architecture>cqrs</architecture> -->
-        <!-- <architecture>onion</architecture> -->
-    </enabled_rules>
-
-    <project_overrides>
-        <!--
+  <project_overrides>
+    <!--
         Add only rules that are genuinely specific to this project.
 
         Example:
@@ -38,6 +29,6 @@
             All public APIs must use /v1.
         </rule>
         -->
-    </project_overrides>
+  </project_overrides>
 
 </project_profile>
