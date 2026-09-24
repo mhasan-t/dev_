@@ -225,6 +225,7 @@
       <rule>Use `Makefile` for spinning up dev servers, stopping, cleaning, and inspecting
         containers, data, and servers.</rule>
       <example_makefile>
+        <![CDATA[
         ```
         # Core development services never include Shopify or observability containers.
         DEV_COMPOSE = docker compose --env-file .env -f docker-compose.dev.yaml
@@ -313,6 +314,7 @@
         %:
         @:
         ```
+        ]]>
       </example_makefile>
     </developer_experience>
 
