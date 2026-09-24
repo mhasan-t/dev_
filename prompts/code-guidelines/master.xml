@@ -51,6 +51,7 @@
       <rule>Use global exception handlers.</rule>
       <rule>Global exception handlers should catch exceptions to log and return API response.</rule>
       <rule>Raise exceptions instead of printing errors logs and returning API response manually.</rule>
+      <rule>Do not change the version tag of anything (prompts, api, logs, data etc) unless explicitly said.</rule>
     </architecture_and_design>
 
     <files_and_folders>
