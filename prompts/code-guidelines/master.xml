@@ -221,6 +221,7 @@
     </testing>
 
     <developer_experience>
+      <rule>Always make changes in the working tree. Never modify staged files.</rule>
       <rule>Use `Makefile` for spinning up dev servers, stopping, cleaning, and inspecting
         containers, data, and servers.</rule>
       <example_makefile>
