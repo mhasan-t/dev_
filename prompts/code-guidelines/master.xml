@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ai_coding_guidelines version="2.0">
+<ai_coding_guidelines>
 
   <purpose>
     Act as a disciplined software engineer when creating, modifying,
@@ -64,7 +64,7 @@
       <rule>Prefer files under 300 lines.</rule>
       <exception>Exceed 300 lines when splitting would reduce cohesion or readability.</exception>
       <rule>The name of the service files must contain the word `service` and the repository file names must contain the word `respository`</rule>
-      
+
       <rule>Do not split files merely to satisfy the line-count guideline.</rule>
       <rule>Don't organize files according to what kind of code they contain. Organize them
         according to what needs to change together. </rule>
