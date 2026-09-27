@@ -3,12 +3,13 @@
 # build_instructions.sh
 #
 # Build a single project-specific guidelines file by merging:
-#   1. master.xml (universal rules), and
+#   1. master.xml (universal rules),
 #   2. every technology / framework / architecture guideline file
-#      enabled in the given project's project.xml.
+#      enabled in the given project's project.xml, and
+#   3. the complete project.xml contents.
 #
-# The fragments are inserted before master.xml's closing root tag so
-# the result is one coherent document.
+# The fragments and project configuration are inserted before
+# master.xml's closing root tag so the result is one coherent document.
 #
 # Usage:
 #   ./build_instructions.sh [path/to/project.xml] [path/to/output.xml]
@@ -60,6 +61,7 @@ fi
 # architecture) inside <enabled_rules>, ignoring commented-out entries.
 enabled_rules() {
     local tag="$1"
+
     sed -n '/<enabled_rules>/,/<\/enabled_rules>/p' "$PROJECT_XML" \
         | sed 's/<!--.*-->//g' \
         | sed -n "s/^.*<$tag>\([^<]*\)<\/$tag>.*$/\1/p"
@@ -75,10 +77,12 @@ folder_for_tag() {
 
 append_rule_file() {
     local path="$1"
+
     if [[ ! -f "$path" ]]; then
         echo "error: guideline file not found for enabled rule: ${path#"$GUIDELINES_DIR"/}" >&2
         exit 1
     fi
+
     {
         printf '\n    <!-- ============================================================\n'
         printf '         %s\n' "${path#"$GUIDELINES_DIR"/}"
@@ -88,17 +92,51 @@ append_rule_file() {
     }
 }
 
+append_project_xml() {
+    {
+        printf '\n    <!-- ============================================================\n'
+        printf '         Project configuration: project.xml\n'
+        printf '         ============================================================ -->\n\n'
+
+        printf '    <project_configuration>\n'
+        printf '        <project_xml><![CDATA[\n'
+        cat "$PROJECT_XML"
+        printf ']]></project_xml>\n'
+        printf '    </project_configuration>\n'
+        printf '\n'
+    }
+}
+
+
 TMP="$(mktemp)"
 trap 'rm -f "$TMP"' EXIT
 
-# Everything in master.xml except the final closing root tag.
+# Start with master.xml's opening/root content, excluding its final
+# closing root tag.
 sed '$d' "$MASTER_XML" > "$TMP"
 
+# Add project.xml FIRST, immediately inside the root element.
+{
+    printf '\n'
+    printf '    <!-- ============================================================\n'
+    printf '         Project configuration: project.xml\n'
+    printf '         ============================================================ -->\n\n'
+
+    printf '    <project_configuration>\n'
+    printf '        <project_xml><![CDATA[\n'
+    cat "$PROJECT_XML"
+    printf ']]></project_xml>\n'
+    printf '    </project_configuration>\n'
+    printf '\n'
+} >> "$TMP"
+
+# Add enabled technology/framework/architecture guidelines.
 for TAG in technology framework architecture; do
     FOLDER="$(folder_for_tag "$TAG")"
+
     while IFS= read -r NAME; do
-        # Skip empty lines.
         [[ -z "${NAME//[[:space:]]/}" ]] && continue
+
         append_rule_file "$GUIDELINES_DIR/$FOLDER/$NAME.xml" >> "$TMP"
     done < <(enabled_rules "$TAG")
 done
