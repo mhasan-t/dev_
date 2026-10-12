@@ -214,6 +214,12 @@ printf '%s\n' "$LAST_LINE" >> "$TMP"
 if [[ "$FORMAT" == "md" ]]; then
     xml_to_md "$TMP" > "$TMP.md"
     mv "$TMP.md" "$TMP"
+elif [[ "$INLINE" == true || "$FILE_EXT" == "md" ]]; then
+    # Raw XML in a .md file renders as a mix of text, hidden tags and
+    # indented code blocks. Fence it; four backticks because the content
+    # contains ``` blocks.
+    { printf '````xml\n'; cat "$TMP"; printf '````\n'; } > "$TMP.md"
+    mv "$TMP.md" "$TMP"
 fi
 
 INSTRUCTIONS=".ai/instructions.$FILE_EXT"
