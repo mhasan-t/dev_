@@ -99,9 +99,9 @@
       <naming>
         <table_names>snake_case</table_names>
         <column_names>snake_case</column_names>
-        <code_representation>camelCase</code_representation>
+        <code_representation>camelCase or snake_case based on language.</code_representation>
         <example>
-          ORM class: AnalyticsInstallation. Application attribute: createdAt. Database table: analytics_installation. Database column: created_at.
+          ORM class: AnalyticsInstallation or analytics_installation. Application attribute: createdAt. Database table: analytics_installation. Database column: created_at.
         </example>
       </naming>
       <migrations>
