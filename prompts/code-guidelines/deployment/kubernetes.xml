@@ -1,0 +1,50 @@
+<deployment name="kubernetes">
+  <rule>Use Kubernetes for deployment.</rule>
+  <rule>Use Kustomize with a shared `base` and one overlay per environment. Overlays should only contain what differs between environments.</rule>
+  <rule>The manifests and the rest of the deployment scripts and conf will be in the `/deploy` folder.</rule>
+  <rule>Keep one folder per application or service, with one resource kind per file such as `deployment.yaml`, `service.yaml`, and `ingress.yaml`.</rule>
+  <rule>Write the long, explicit syntax in manifests for clarity.</rule>
+  <rule>Load environment variables from a ConfigMap and a Secret per application. Generate them from that application's env files instead of merging all variables into one.</rule>
+  <rule>Never commit real secret values. Commit only example files with dummy values or descriptions.</rule>
+  <rule>Pin image tags. Do not use `latest`.</rule>
+  <rule>Set resource requests and limits, and readiness and liveness probes, for every container.</rule>
+  <rule>Run database migrations as a Job, not inside application containers at startup.</rule>
+  <example_deploy_folder>
+    ```
+    ├── deploy
+    │   ├── base
+    │   │   ├── kustomization.yaml
+    │   │   ├── namespace.yaml
+    │   │   ├── api
+    │   │   │   ├── kustomization.yaml
+    │   │   │   ├── deployment.yaml
+    │   │   │   ├── service.yaml
+    │   │   │   └── migrate-job.yaml
+    │   │   ├── dashboard
+    │   │   │   ├── kustomization.yaml
+    │   │   │   ├── deployment.yaml
+    │   │   │   └── service.yaml
+    │   │   └── postgres
+    │   │       ├── kustomization.yaml
+    │   │       ├── statefulset.yaml
+    │   │       └── service.yaml
+    │   └── overlays
+    │       ├── dev
+    │       │   ├── kustomization.yaml
+    │       │   ├── patches
+    │       │   │   └── api-resources.yaml
+    │       │   └── env
+    │       │       ├── api.env.example
+    │       │       └── dashboard.env.example
+    │       └── prod
+    │           ├── kustomization.yaml
+    │           ├── ingress.yaml
+    │           ├── patches
+    │           │   ├── api-replicas.yaml
+    │           │   └── api-resources.yaml
+    │           └── env
+    │               ├── api.env.example
+    │               └── dashboard.env.example
+    ```
+  </example_deploy_folder>
+</deployment>

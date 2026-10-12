@@ -6,14 +6,14 @@
 
     Apply the universal rules in this file to every project.
 
-    Apply technology, framework, and architecture rules only when they are explicitly enabled by the project's project.xml.
+    Apply technology, framework, and architecture rules only when they are explicitly enabled in the project configuration.
 
     Do not invent or apply rules from technologies that are not used by the project.
   </purpose>
 
   <rule_precedence>
     <priority level="1">Explicit requirements in the current task.</priority>
-    <priority level="2">Project-specific rules in project.xml.</priority>
+    <priority level="2">Project-specific rules in the project configuration.</priority>
     <priority level="3">Framework-specific rules.</priority>
     <priority level="4">Architecture-specific rules.</priority>
     <priority level="5">Technology-specific rules.</priority>
@@ -26,8 +26,6 @@
 
   <project_context>
     Before implementing a task, determine the project's: language, runtime, framework, architecture, database, package manager, repository structure, and existing conventions.
-
-    Read project.xml and instructions.xml
   </project_context>
 
   <universal_rules>
@@ -53,7 +51,7 @@
       <rule>Keep schemas near the layer or module that owns their responsibility.</rule>
       <rule>Prefer files under 300 lines.</rule>
       <exception>Exceed 300 lines when splitting would reduce cohesion or readability.</exception>
-      <rule>The name of the service files must contain the word `service` and the repository file names must contain the word `respository`</rule>
+      <rule>The name of the service files must contain the word `service` and the repository file names must contain the word `repository`</rule>
 
       <rule>Do not split files merely to satisfy the line-count guideline.</rule>
       <rule>Don't organize files according to what kind of code they contain. Organize them according to what needs to change together. </rule>

@@ -4,21 +4,20 @@
 #
 # Build project-specific agent instructions by merging:
 #   1. master.xml (universal rules),
-#   2. every technology / framework / architecture guideline file
-#      enabled in the given project's project.xml, and
-#   3. the complete project.xml contents.
+#   2. the project configuration, asked for interactively, and
+#   3. every technology / framework / architecture guideline file enabled
+#      in that configuration.
 #
 # The result is written to the current folder, either
 # inlined into AGENTS.md or as .ai/instructions.<file> linked from AGENTS.md.
 # The AGENTS.md preamble comes from ex_xml_AGENTS.md. Asks before overwriting existing files.
 #
 # Usage:
-#   ./build_instructions.sh [--output xml|md] [--file EXT] [--inline] [path/to/project.xml]
+#   ./build_instructions.sh [--output xml|md] [--file EXT] [--inline]
 #
 #   --output  Content format of the instructions. Default: xml
 #   --file    Extension of .ai/instructions.<EXT>. Default: xml. Ignored with --inline.
 #   --inline  Write the instructions directly into AGENTS.md instead of .ai/.
-#   project.xml defaults to ./project.xml
 #
 # Examples:
 #   # XML rules in .ai/instructions.xml, linked from AGENTS.md:
@@ -28,7 +27,7 @@
 #   bash /path/to/code-guidelines/build_instructions.sh --output md --file xml
 #
 #   # Markdown rules inlined into AGENTS.md:
-#   bash /path/to/code-guidelines/build_instructions.sh --output md --inline /path/to/project.xml
+#   bash /path/to/code-guidelines/build_instructions.sh --output md --inline
 
 set -euo pipefail
 
@@ -39,7 +38,6 @@ AGENTS_TEMPLATE="$GUIDELINES_DIR/ex_xml_AGENTS.md"
 FORMAT="xml"
 FILE_EXT="xml"
 INLINE=false
-PROJECT_XML="project.xml"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -47,7 +45,7 @@ while [[ $# -gt 0 ]]; do
         --file)   FILE_EXT="${2:-}"; shift 2 ;;
         --inline) INLINE=true; shift ;;
         -*)       echo "error: unknown option: $1" >&2; exit 1 ;;
-        *)        PROJECT_XML="$1"; shift ;;
+        *)        echo "error: unexpected argument: $1" >&2; exit 1 ;;
     esac
 done
 
@@ -58,11 +56,6 @@ fi
 
 if [[ ! "$FILE_EXT" =~ ^[A-Za-z0-9]+$ ]]; then
     echo "error: --file must be a plain extension such as xml or md, got: $FILE_EXT" >&2
-    exit 1
-fi
-
-if [[ ! -f "$PROJECT_XML" ]]; then
-    echo "error: project.xml not found at: $PROJECT_XML" >&2
     exit 1
 fi
 
@@ -79,31 +72,44 @@ if [[ "$LAST_LINE" != *"</ai_coding_guidelines>"* ]]; then
     exit 1
 fi
 
-# Print the names enabled for a rule category (technology, framework,
-# architecture) inside <enabled_rules>, ignoring commented-out entries.
-enabled_rules() {
-    local tag="$1"
-
-    sed -n '/<enabled_rules>/,/<\/enabled_rules>/p' "$PROJECT_XML" \
-        | sed 's/<!--.*-->//g' \
-        | sed -n "s/^.*<$tag>\([^<]*\)<\/$tag>.*$/\1/p"
+# Read one answer from stdin, trimmed. Empty when input ends.
+ask() {
+    local answer=""
+    read -r -p "$1: " answer || true
+    read -r answer <<< "$answer" || true
+    printf '%s' "$answer"
 }
 
-folder_for_tag() {
-    case "$1" in
-        technology)   echo "technologies" ;;
-        framework)    echo "frameworks" ;;
-        architecture) echo "architectures" ;;
-    esac
+# Ask for comma-separated guideline names from a folder and print them one
+# per line. Unknown names are asked again interactively and fail otherwise.
+ask_rules() {
+    local folder="$1" available names name ok
+    available="$(cd "$GUIDELINES_DIR/$folder" && ls -- *.xml | sed 's/\.xml$//' | paste -sd, - | sed 's/,/, /g')"
+
+    while true; do
+        IFS=, read -ra names <<< "$(ask "${folder^} [$available]")"
+        ok=true
+        for name in "${names[@]}"; do
+            read -r name <<< "$name" || true
+            [[ -z "$name" ]] && continue
+            if [[ "$name" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ && -f "$GUIDELINES_DIR/$folder/$name.xml" ]]; then
+                printf '%s\n' "$name"
+            else
+                echo "error: unknown $folder entry: $name" >&2
+                ok=false
+            fi
+        done
+        $ok && return
+        [[ -t 0 ]] || exit 1
+    done
+}
+
+xml_escape() {
+    printf '%s' "$1" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g'
 }
 
 append_rule_file() {
     local path="$1"
-
-    if [[ ! -f "$path" ]]; then
-        echo "error: guideline file not found for enabled rule: ${path#"$GUIDELINES_DIR"/}" >&2
-        exit 1
-    fi
 
     {
         printf '\n    <!-- ============================================================\n'
@@ -114,19 +120,27 @@ append_rule_file() {
     }
 }
 
-append_project_xml() {
-    {
-        printf '\n    <!-- ============================================================\n'
-        printf '         Project configuration: project.xml\n'
-        printf '         ============================================================ -->\n\n'
+# Print the project configuration from the answers collected below.
+append_project_config() {
+    local field rule
+    printf '\n    <!-- ============================================================\n'
+    printf '         Project configuration\n'
+    printf '         ============================================================ -->\n\n'
 
-        printf '    <project_configuration>\n'
-        printf '        <project_xml><![CDATA[\n'
-        cat "$PROJECT_XML"
-        printf ']]></project_xml>\n'
-        printf '    </project_configuration>\n'
-        printf '\n'
-    }
+    printf '    <project_configuration>\n'
+    for field in name technologies frameworks architectures deployment runtime database package_manager; do
+        if [[ -n "${PROJECT[$field]}" ]]; then
+            printf '        <%s>%s</%s>\n' "$field" "$(xml_escape "${PROJECT[$field]}")" "$field"
+        fi
+    done
+    if [[ ${#OVERRIDES[@]} -gt 0 ]]; then
+        printf '        <project_overrides>\n'
+        for rule in "${OVERRIDES[@]}"; do
+            printf '            <rule>%s</rule>\n' "$(xml_escape "$rule")"
+        done
+        printf '        </project_overrides>\n'
+    fi
+    printf '    </project_configuration>\n'
 }
 
 # Convert the merged XML document to Markdown: elements with children become
@@ -148,13 +162,6 @@ def body(el):
 
 def render(el, depth, out):
     text = body(el)
-
-    # project.xml is embedded as CDATA; render its parsed contents instead.
-    if text.startswith("<?xml"):
-        out.append(heading(el, depth))
-        for child in ET.fromstring(text.encode()):
-            render(child, depth + 1, out)
-        return
 
     if len(el):
         out.append(heading(el, depth))
@@ -184,6 +191,21 @@ PY
 }
 
 
+# Collect the project configuration.
+declare -A PROJECT ENABLED
+OVERRIDES=()
+PROJECT[name]="$(ask "Project name")"
+for FOLDER in technologies frameworks architectures deployment; do
+    ENABLED[$FOLDER]="$(ask_rules "$FOLDER")"
+    PROJECT[$FOLDER]="$(paste -sd, - <<< "${ENABLED[$FOLDER]}" | sed 's/,/, /g')"
+done
+PROJECT[runtime]="$(ask "Runtime (e.g. node, python 3.12)")"
+PROJECT[database]="$(ask "Database")"
+PROJECT[package_manager]="$(ask "Package manager")"
+while RULE="$(ask "Project-specific rule (empty to finish)")" && [[ -n "$RULE" ]]; do
+    OVERRIDES+=("$RULE")
+done
+
 TMP="$(mktemp)"
 trap 'rm -f "$TMP"' EXIT
 
@@ -191,18 +213,21 @@ trap 'rm -f "$TMP"' EXIT
 # closing root tag.
 sed '$d' "$MASTER_XML" > "$TMP"
 
-# Add project.xml FIRST, immediately inside the root element.
-append_project_xml >> "$TMP"
+# Inline builds have no separate instructions file to point to.
+if [[ "$INLINE" == true ]]; then
+    sed -i '/<project_context>/,/<\/project_context>/d' "$TMP"
+fi
+
+# Add the project configuration FIRST, immediately inside the root element.
+append_project_config >> "$TMP"
 
 # Add enabled technology/framework/architecture guidelines.
-for TAG in technology framework architecture; do
-    FOLDER="$(folder_for_tag "$TAG")"
-
+for FOLDER in technologies frameworks architectures deployment; do
     while IFS= read -r NAME; do
-        [[ -z "${NAME//[[:space:]]/}" ]] && continue
-
-        append_rule_file "$GUIDELINES_DIR/$FOLDER/$NAME.xml" >> "$TMP"
-    done < <(enabled_rules "$TAG")
+        if [[ -n "$NAME" ]]; then
+            append_rule_file "$GUIDELINES_DIR/$FOLDER/$NAME.xml" >> "$TMP"
+        fi
+    done <<< "${ENABLED[$FOLDER]}"
 done
 
 # Close the root element opened by master.xml.

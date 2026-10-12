@@ -1,8 +1,3 @@
-
-<!-- ============================================================
-        DJANGO
-============================================================ -->
-
 <technology name="django">
 
   <architecture>
@@ -15,15 +10,31 @@
     </rule>
   </architecture>
 
+  <urls>
+    <rule>
+      urls.py files should only map routes to views or ViewSets.
+
+      Each app should own its urls.py, included from the project's root urls.py.
+    </rule>
+  </urls>
+
   <viewsets>
     <rule>
       ViewSets should validate requests and call services.
-    </rule>
 
-    <rule>
       ViewSets should contain no business logic.
     </rule>
   </viewsets>
+
+  <validation>
+    <rule>
+      Validate request data with serializers instead of manual checks in views.
+    </rule>
+
+    <rule>
+      Use explicit serializer fields for responses so unlisted model fields are not leaked.
+    </rule>
+  </validation>
 
   <models>
     <rule>
@@ -36,6 +47,40 @@
       Use custom Django managers to encapsulate common and core database queries and table-level pre-filtering operations.
     </rule>
   </managers>
+
+  <permissions_and_mixins>
+    <rule>
+      Permission classes and mixins shared by views should live in their own files.
+    </rule>
+  </permissions_and_mixins>
+
+  <authorization>
+    <rule>
+      For authorization, use Policy classes similar to the policy pattern used by Ruby on Rails, exposed to views through DRF permission classes.
+    </rule>
+  </authorization>
+
+  <error_handling>
+    <rule>
+      Use a single custom DRF EXCEPTION_HANDLER as the global exception handler. Views and services should raise exceptions instead of building error responses.
+    </rule>
+  </error_handling>
+
+  <request_state>
+
+    <authentication>
+      <rule>
+        When user authentication exists, request.user should contain the authenticated user, set by Django's or DRF's authentication classes.
+      </rule>
+    </authentication>
+
+    <multi_tenancy>
+      <rule>
+        When multi-tenancy exists, a middleware should set request.tenant with the current tenant information.
+      </rule>
+    </multi_tenancy>
+
+  </request_state>
 
   <settings>
     <rule>
@@ -55,5 +100,10 @@
     </rule>
   </settings>
 
+  <logging>
+    <rule>
+      Configure the global logger through the LOGGING setting and get loggers with logging.getLogger(__name__).
+    </rule>
+  </logging>
 
 </technology>

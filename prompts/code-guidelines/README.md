@@ -7,30 +7,15 @@ Builds agent instructions (`AGENTS.md`) for a project by merging the universal r
 | Path | Purpose |
 | --- | --- |
 | `master.xml` | Universal rules, always included. |
-| `technologies/`, `frameworks/`, `architectures/` | Optional rule sets, included when enabled in `project.xml`. |
-| `project.xml` | Template for a project's profile and enabled rules. |
+| `technologies/`, `frameworks/`, `architectures/`, `deployment/` | Optional rule sets, included when chosen during the build. |
 | `ex_xml_AGENTS.md` | Preamble used for the generated `AGENTS.md`. |
 | `build_instructions.sh` | Builds the output. |
 | `check_build_instructions.sh` | Smoke check: builds every option combination. |
 
-## 1. Configure the project
-
-Copy `project.xml` into your project and edit it. List the rule sets to include by file name, without `.xml`:
-
-```xml
-<enabled_rules>
-  <technology>typescript</technology>
-  <framework>express</framework>
-  <architecture>modular</architecture>
-</enabled_rules>
-```
-
-Commented-out entries are ignored. Put project-specific rules in `<project_overrides>`.
-
-## 2. Build
+## Build
 
 ```sh
-build_instructions.sh [--output xml|md] [--file EXT] [--inline] [project.xml]
+build_instructions.sh [--output xml|md] [--file EXT] [--inline]
 ```
 
 | Option | Default | Meaning |
@@ -38,11 +23,21 @@ build_instructions.sh [--output xml|md] [--file EXT] [--inline] [project.xml]
 | `--output` | `xml` | Content format: `xml` or `md`. |
 | `--file` | `xml` | Extension of `.ai/instructions.<EXT>`. Ignored with `--inline`. |
 | `--inline` | off | Put the instructions directly in `AGENTS.md` instead of `.ai/`. |
-| `project.xml` | `./project.xml` | Project profile to build from. |
 
 `--output` and `--file` are independent: `--output md --file xml` writes Markdown content to `instructions.xml`. XML written to a `.md` file (`--inline`, or `--file md`) is unindented and has its CDATA markers removed, so it renders as text; only the Makefile and directory trees render as code.
 
-Run it from your project root. It writes to the current folder:
+Run it from your project root. It asks for the project configuration:
+
+| Question | Answer |
+| --- | --- |
+| Project name | Free text. |
+| Technologies, Frameworks, Architectures, Deployment | Comma-separated rule set names, e.g. `onion, modular`. The available names are shown; an unknown name is asked again. |
+| Runtime, Database, Package manager | Free text. |
+| Project-specific rule | One rule per line; an empty line finishes. Rules may contain commas. |
+
+Every answer may be left empty. The answers are written into the instructions as the project configuration, followed by the chosen rule sets.
+
+It then writes to the current folder:
 
 ```
 AGENTS.md              # default: tells the agent to read .ai/instructions.xml
@@ -57,25 +52,22 @@ Examples:
 build_instructions.sh                              # XML in .ai/instructions.xml
 build_instructions.sh --output md --file md        # Markdown in .ai/instructions.md
 build_instructions.sh --output md --inline         # Markdown inside AGENTS.md
-build_instructions.sh path/to/project.xml       # different project.xml
 ```
 
 Requires `bash` and `python3` (standard library only, used for `--output md`).
 
-## Shell aliases (optional)
+## Shell alias (optional)
 
-Run these from any project folder. They pull the latest guidelines first:
+Run it from any project folder. It pulls the latest guidelines first:
 
 ```sh
-alias get_project_xml='git -C ~/code/dev_ pull && cp ~/code/dev_/prompts/code-guidelines/project.xml ./project.xml'
 alias build_instructions='git -C ~/code/dev_ pull && ~/code/dev_/prompts/code-guidelines/build_instructions.sh'
 ```
 
 ```sh
-get_project_xml                  # copies project.xml here; edit it
-build_instructions --output md   # writes AGENTS.md and .ai/ here
+build_instructions --output md   # asks the questions, writes AGENTS.md and .ai/ here
 ```
 
 ## Adding a rule set
 
-Add `<name>.xml` to `technologies/`, `frameworks/` or `architectures/`, then enable it in `project.xml` with that name. Run `bash check_build_instructions.sh` to verify the build still works.
+Add `<name>.xml` to `technologies/`, `frameworks/`, `architectures/` or `deployment/`, and it appears in the build's list of choices. Run `bash check_build_instructions.sh` to verify the build still works.

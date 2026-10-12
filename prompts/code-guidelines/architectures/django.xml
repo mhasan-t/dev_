@@ -1,9 +1,11 @@
-<structure_example name="django">
+<architecture name="django">
 
-  <django_structure>
+  <structure_example>
 
     <rule>
-      The following is the recommended Django structure when the Django technology profile is active.
+      The following is the recommended Django structure when the Django framework is enabled.
+
+      Adapt it to the actual project rather than blindly copying it.
     </rule>
 
     <structure>
@@ -62,6 +64,6 @@
       ```
     </structure>
 
-  </django_structure>
+  </structure_example>
 
-</structure_example>
+</architecture>

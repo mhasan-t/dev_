@@ -1,0 +1,85 @@
+<technology name="fastify">
+
+  <routes>
+    <rule>
+      Routes should only declare the method, URL, schema, and hooks, and connect the route to a controller.
+
+      Routes should contain no business logic.
+    </rule>
+  </routes>
+
+  <controllers>
+    <rule>
+      Controllers should read the validated request and call appropriate services.
+
+      Controllers should contain no business logic.
+    </rule>
+  </controllers>
+
+  <validation>
+    <rule>
+      Validate request bodies, params, query strings, and headers with route schemas instead of manual checks in controllers.
+    </rule>
+
+    <rule>
+      Define response schemas so responses are serialized and do not leak unlisted fields.
+    </rule>
+  </validation>
+
+  <hooks_and_decorators>
+    <rule>
+      Hooks and decorators shared by routes, such as authentication or loading the current tenant, should live in their own files.
+    </rule>
+  </hooks_and_decorators>
+
+  <authorization>
+    <rule>
+      For authorization, use Policy classes similar to the policy pattern used by Ruby on Rails.
+    </rule>
+  </authorization>
+
+  <naming>
+    <rule>
+      Use filenames such as .routes.ts and .controller.ts where this convention is adopted by the project.
+    </rule>
+  </naming>
+
+  <plugins>
+    <rule>
+      Register each module as a plugin with its own routes. Use fastify-plugin only for plugins that must share decorators or hooks with the parent scope, such as database clients and authentication.
+    </rule>
+  </plugins>
+
+  <error_handling>
+    <rule>
+      Use a single setErrorHandler as the global exception handler. Controllers and services should throw errors instead of building error responses.
+    </rule>
+  </error_handling>
+
+  <request_state>
+
+    <authentication>
+      <rule>
+        When user authentication exists, an onRequest or preHandler hook should set request.user with the authenticated user information.
+      </rule>
+    </authentication>
+
+    <multi_tenancy>
+      <rule>
+        When multi-tenancy exists, an onRequest or preHandler hook should set request.tenant with the current tenant information.
+      </rule>
+    </multi_tenancy>
+
+    <rule>
+      Declare request.user and request.tenant with decorateRequest and type them through module augmentation.
+    </rule>
+
+  </request_state>
+
+  <logging>
+    <rule>
+      Use Fastify's built-in logger (request.log inside handlers) as the global logger instance.
+    </rule>
+  </logging>
+
+</technology>
