@@ -2,16 +2,13 @@
 <ai_coding_guidelines>
 
   <purpose>
-    Act as a disciplined software engineer when creating, modifying,
-    reviewing, or refactoring code.
+    Act as a disciplined software engineer when creating, modifying, reviewing, or refactoring code.
 
     Apply the universal rules in this file to every project.
 
-    Apply technology, framework, and architecture rules only when they
-    are explicitly enabled by the project's project.xml.
+    Apply technology, framework, and architecture rules only when they are explicitly enabled by the project's project.xml.
 
-    Do not invent or apply rules from technologies that are not used
-    by the project.
+    Do not invent or apply rules from technologies that are not used by the project.
   </purpose>
 
   <rule_precedence>
@@ -23,17 +20,12 @@
     <priority level="6">Universal rules in this file.</priority>
 
     <conflict_resolution>
-      If two applicable rules conflict, follow the higher-priority rule.
-      If the conflict cannot be resolved from this hierarchy, preserve
-      the existing project convention and explain the conflict before
-      making a broad architectural change.
+      If two applicable rules conflict, follow the higher-priority rule. If the conflict cannot be resolved from this hierarchy, preserve the existing project convention and explain the conflict before making a broad architectural change.
     </conflict_resolution>
   </rule_precedence>
 
   <project_context>
-    Before implementing a task, determine the project's:
-    language, runtime, framework, architecture, database, package manager,
-    repository structure, and existing conventions.
+    Before implementing a task, determine the project's: language, runtime, framework, architecture, database, package manager, repository structure, and existing conventions.
 
     Read project.xml and instructions.xml
   </project_context>
@@ -56,20 +48,16 @@
 
     <files_and_folders>
       <rule>A file should contain only closely related functions, classes, or definitions.</rule>
-      <rule>A file should normally contain one primary class; tightly coupled helper classes may
-        remain with it.</rule>
-      <rule>Group related classes, models, routers, controllers, services, and schemas in meaningful
-        folders.</rule>
+      <rule>A file should normally contain one primary class; tightly coupled helper classes may remain with it.</rule>
+      <rule>Group related classes, models, routers, controllers, services, and schemas in meaningful folders.</rule>
       <rule>Keep schemas near the layer or module that owns their responsibility.</rule>
       <rule>Prefer files under 300 lines.</rule>
       <exception>Exceed 300 lines when splitting would reduce cohesion or readability.</exception>
       <rule>The name of the service files must contain the word `service` and the repository file names must contain the word `respository`</rule>
 
       <rule>Do not split files merely to satisfy the line-count guideline.</rule>
-      <rule>Don't organize files according to what kind of code they contain. Organize them
-        according to what needs to change together. </rule>
-      <rule>Don't overfactor the files. If a file only contains 5 lines of code, it might be
-        overfactored.</rule>
+      <rule>Don't organize files according to what kind of code they contain. Organize them according to what needs to change together. </rule>
+      <rule>Don't overfactor the files. If a file only contains 5 lines of code, it might be overfactored.</rule>
     </files_and_folders>
 
     <functions_and_methods>
@@ -79,14 +67,9 @@
       <rule>Keep non-exported helpers private or local when the language supports it.</rule>
       <rule>Keep helper methods at the bottom of a class when that matches project conventions.</rule>
       <rule>Use standalone utility functions when a class would add unnecessary complexity.</rule>
-      <rule>Use the Factory pattern when object creation or dependency selection genuinely benefits
-        from it.</rule>
-      <rule>Repositories only handle ORM calls or execute SQLs and return the data. - Repositories
-        shouldn’t know about any DTO, it should return the data as it comes from the ORM. It
-        shouldn't commit.</rule>
-      <rule>Services should contain the core business logic and is responsible for persistence. So
-        services will commit DB changes, but will use Query to get DB data and Repository to mutate
-        DB data.</rule>
+      <rule>Use the Factory pattern when object creation or dependency selection genuinely benefits from it.</rule>
+      <rule>Repositories only handle ORM calls or execute SQLs and return the data. - Repositories shouldn’t know about any DTO, it should return the data as it comes from the ORM. It shouldn't commit.</rule>
+      <rule>Services should contain the core business logic and is responsible for persistence. So services will commit DB changes, but will use Query to get DB data and Repository to mutate DB data.</rule>
       <rule>Services should return data in DTO formats.</rule>
     </functions_and_methods>
 
@@ -99,79 +82,61 @@
 
     <comments>
       <rule>Comments must provide information needed to understand implementation logic.</rule>
-      <rule>Comment functions, classes, components, or significant blocks when their purpose or
-        logic is not obvious.</rule>
+      <rule>Comment functions, classes, components, or significant blocks when their purpose or logic is not obvious.</rule>
       <rule>Explain why non-obvious code exists rather than restating what the code literally does.</rule>
-      <rule>If parameters, return values, side effects, or assumptions are not clear from a
-        definition, document them using the language's conventional format.</rule>
-      <rule>For complex logic, add comments around logical blocks where they materially help a new
-        engineer understand the implementation.</rule>
+      <rule>If parameters, return values, side effects, or assumptions are not clear from a definition, document them using the language's conventional format.</rule>
+      <rule>For complex logic, add comments around logical blocks where they materially help a new engineer understand the implementation.</rule>
       <rule>Do not explain programming-language syntax or obvious library usage.</rule>
-      <rule>CSS and UI components should also be documented when their implementation requires
-        explanation.</rule>
+      <rule>CSS and UI components should also be documented when their implementation requires explanation.</rule>
       <database_columns>
-        <rule>Document database columns unless their purpose is obvious, such as common IDs and
-          timestamps.</rule>
+        <rule>Document database columns unless their purpose is obvious, such as common IDs and timestamps.</rule>
       </database_columns>
     </comments>
 
     <database>
       <uuid>
         <rule>Prefer UUID generation by the database.</rule>
-        <exception>The application may generate an ID when multiple objects need the same ID before
-          persistence.</exception>
+        <exception>The application may generate an ID when multiple objects need the same ID before persistence.</exception>
       </uuid>
       <naming>
         <table_names>snake_case</table_names>
         <column_names>snake_case</column_names>
         <code_representation>camelCase</code_representation>
         <example>
-          ORM class: AnalyticsInstallation.
-          Application attribute: createdAt.
-          Database table: analytics_installation.
-          Database column: created_at.
+          ORM class: AnalyticsInstallation. Application attribute: createdAt. Database table: analytics_installation. Database column: created_at.
         </example>
       </naming>
       <migrations>
         <rule>A migration should normally change only one table.</rule>
-        <exception>A migration may change multiple tightly coupled tables when a feature requires
-          it.</exception>
+        <exception>A migration may change multiple tightly coupled tables when a feature requires it.</exception>
       </migrations>
     </database>
 
     <environment_variables>
       <rule>Group related environment variables together.</rule>
       <rule>Add comments describing non-obvious variable groups.</rule>
-      <rule>Keep common variables at the appropriate top-level scope and application-specific
-        variables within their application.</rule>
-      <rule>Do not store versions, package names, service names, titles, or static software metadata
-        in environment variables.</rule>
+      <rule>Keep common variables at the appropriate top-level scope and application-specific variables within their application.</rule>
+      <rule>Do not store versions, package names, service names, titles, or static software metadata in environment variables.</rule>
       <rule>Store deployment-independent configuration in configuration files.</rule>
       <rule>Secret values should appear at the bottom of example environment files.</rule>
       <rule>Dependent variables must be conditionally validated based on their controlling variable.</rule>
       <example>
-        If ML_EXPORT_ENABLED=false, ML_EXPORT_SCHEDULE_CRON,
-        ML_EXPORT_BATCH_SIZE, and other ML_EXPORT_* values should
-        not be required.
+        If ML_EXPORT_ENABLED=false, ML_EXPORT_SCHEDULE_CRON, ML_EXPORT_BATCH_SIZE, and other ML_EXPORT_* values should not be required.
       </example>
-      <rule>DO NOT RENAME ENVIRONMENT VARIABLES. The same name should be consistent in `.env` file,
-        `dockerfile`, `docker-compose` files, `kubernetes` config files, and inside the application.</rule>
+      <rule>DO NOT RENAME ENVIRONMENT VARIABLES. The same name should be consistent in `.env` file, `dockerfile`, `docker-compose` files, `kubernetes` config files, and inside the application.</rule>
       <example_files>
         <rule>Create .env.local.example and .env.production.example when environment files are used.</rule>
         <rule>.env.local.example should be usable as the basis for local development.</rule>
-        <rule>.env.production.example should contain dummy values or descriptions, never real
-          secrets.</rule>
+        <rule>.env.production.example should contain dummy values or descriptions, never real secrets.</rule>
         <rule>In monorepos, include the application name in environment example filenames.</rule>
-        <rule>Deployment systems must preserve separation between environment files instead of
-          merging unrelated production variables.</rule>
+        <rule>Deployment systems must preserve separation between environment files instead of merging unrelated production variables.</rule>
       </example_files>
     </environment_variables>
 
     <logging>
       <rule>Use a global logger instance.</rule>
       <rule>Globally catch and log all raised errors.</rule>
-      <rule>Raise exceptions to be catched by the global logger middleware instead of writing
-        `try...catch...` or `logger.error...` manually.</rule>
+      <rule>Raise exceptions to be catched by the global logger middleware instead of writing `try...catch...` or `logger.error...` manually.</rule>
       <rule>Log every meaningful operation.</rule>
       <rule>Logs must contain enough context to diagnose failures and trace important operations.</rule>
       <rule>Never log passwords, API keys, tokens, private keys, or other sensitive values.</rule>
@@ -185,34 +150,28 @@
     <configuration>
       <rule>Keep configuration in the project's designated config location.</rule>
       <rule>Keep deployment-independent configuration out of environment variables.</rule>
-      <rule>Store versions, package names, service names, titles, and software metadata in
-        configuration files.</rule>
+      <rule>Store versions, package names, service names, titles, and software metadata in configuration files.</rule>
     </configuration>
 
     <docker>
-      <rule>Don't put the `venv` or `node_modules` in the app folder. Keep them in `/opt` so that
-        the dev containers can mount and change ownership of them.</rule>
+      <rule>Don't put the `venv` or `node_modules` in the app folder. Keep them in `/opt` so that the dev containers can mount and change ownership of them.</rule>
     </docker>
 
     <design>
       <rule>Use Tailwind when Tailwind is part of the project's frontend stack.</rule>
-      <rule>Use global design tokens or variables for repeated colors, typography, spacing, and
-        other design values.</rule>
+      <rule>Use global design tokens or variables for repeated colors, typography, spacing, and other design values.</rule>
     </design>
 
     <documentation>
-      <rule>Update documentation in /docs when changes affect architecture, behavior, APIs,
-        configuration, deployment, or developer workflows.</rule>
-      <rule>Do not create documentation links that depend on fragile source-file paths when the
-        paths can change.</rule>
+      <rule>Update documentation in /docs when changes affect architecture, behavior, APIs, configuration, deployment, or developer workflows.</rule>
+      <rule>Do not create documentation links that depend on fragile source-file paths when the paths can change.</rule>
       <rule>Prefer stable conceptual documentation over implementation-path documentation.</rule>
     </documentation>
 
     <testing>
       <rule>Test observable behavior rather than implementation details.</rule>
       <rule>Write tests for meaningful API endpoints and domain or business logic.</rule>
-      <rule>Do not create isolated tests for trivial helpers when their behavior is adequately
-        covered by larger tests.</rule>
+      <rule>Do not create isolated tests for trivial helpers when their behavior is adequately covered by larger tests.</rule>
       <api_tests>
         <rule>Verify response behavior, relevant database changes, and important business behavior.</rule>
       </api_tests>
@@ -224,8 +183,7 @@
 
     <developer_experience>
       <rule>Always make changes in the working tree. Never modify staged files.</rule>
-      <rule>Use `Makefile` for spinning up dev servers, stopping, cleaning, and inspecting
-        containers, data, and servers.</rule>
+      <rule>Use `Makefile` for spinning up dev servers, stopping, cleaning, and inspecting containers, data, and servers.</rule>
       <example_makefile>
         <![CDATA[
         ```
@@ -236,85 +194,83 @@
         # Everything after the first Make goal is treated as positional arguments.
         ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 
-        .PHONY: dev test lint autogen_migrations apply_alembic manual_test prepare-env up
-        observability-up observability-down down logs observability-logs migrate revision psql
-        app_bash python clear_shopify_sessions
+        .PHONY: dev test lint autogen_migrations apply_alembic manual_test prepare-env up observability-up observability-down down logs observability-logs migrate revision psql app_bash python clear_shopify_sessions
 
         dev:
-        cd size_api && uv run uvicorn src.presentation.api.v1.main:app --reload --log-level debug
+        	cd size_api && uv run uvicorn src.presentation.api.v1.main:app --reload --log-level debug
+
         test:
-        cd size_api && uv run pytest
+        	cd size_api && uv run pytest
 
         lint:
-        cd size_api && uv run ruff check .
+        	cd size_api && uv run ruff check .
 
         autogen_migrations:
-        cd size_api && uv run alembic revision --autogenerate -m "$(m)"
+        	cd size_api && uv run alembic revision --autogenerate -m "$(m)"
 
         apply_alembic:
-        cd size_api && uv run alembic upgrade head
+        	cd size_api && uv run alembic upgrade head
 
         manual_test:
-        cd size_api && uv run python -m tests.manual_test
+        	cd size_api && uv run python -m tests.manual_test
 
         # Create local configuration once while preserving every developer override.
         prepare-env:
-        @test -f .env || cp .env.local.example .env
-        @test -f size_api/.env || cp size_api/.env.local.example size_api/.env
-        @test -f shopify_app/.env || cp shopify_app/.env.local.example shopify_app/.env
-        @test -f dashboard/.env || cp dashboard/.env.local.example dashboard/.env
-        @mkdir -p shopify_app/.shopify/dev-bundle
+        	@test -f .env || cp .env.local.example .env
+        	@test -f size_api/.env || cp size_api/.env.local.example size_api/.env
+        	@test -f shopify_app/.env || cp shopify_app/.env.local.example shopify_app/.env
+        	@test -f dashboard/.env || cp dashboard/.env.local.example dashboard/.env
+        	@mkdir -p shopify_app/.shopify/dev-bundle
 
         compose:
-        $(DEV_COMPOSE) $(ARGS)
+        	$(DEV_COMPOSE) $(ARGS)
 
         up-f: prepare-env
-        TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up --build --remove-orphans $(ARGS)
+        	TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up --build --remove-orphans $(ARGS)
 
         up: prepare-env
-        TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up -d --build --remove-orphans $(ARGS)
+        	TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up -d --build --remove-orphans $(ARGS)
 
         # Start core and observability services under the same Compose project.
         observability-up: prepare-env
-        TELEMETRY_TRACES_ENABLED=true $(DEV_OBSERVABILITY_COMPOSE) up --build --remove-orphans
-        $(ARGS)
+        	TELEMETRY_TRACES_ENABLED=true $(DEV_OBSERVABILITY_COMPOSE) up --build --remove-orphans $(ARGS)
 
         # Return the project to core-only mode and remove observability containers.
         observability-down: prepare-env
-        $(DEV_OBSERVABILITY_COMPOSE) down --remove-orphans
-        TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up --build --remove-orphans $(ARGS)
+        	$(DEV_OBSERVABILITY_COMPOSE) down --remove-orphans
+        	TELEMETRY_TRACES_ENABLED=false $(DEV_COMPOSE) up --build --remove-orphans $(ARGS)
 
         down:
-        $(DEV_OBSERVABILITY_COMPOSE) down --remove-orphans $(ARGS)
+        	$(DEV_OBSERVABILITY_COMPOSE) down --remove-orphans $(ARGS)
 
         logs:
-        $(DEV_COMPOSE) logs --follow $(ARGS)
+        	$(DEV_COMPOSE) logs --follow $(ARGS)
 
         observability-logs:
-        $(DEV_OBSERVABILITY_COMPOSE) logs --follow $(ARGS)
+        	$(DEV_OBSERVABILITY_COMPOSE) logs --follow $(ARGS)
 
         migrate:
-        $(DEV_COMPOSE) run --rm size_api-migrate $(ARGS)
+        	$(DEV_COMPOSE) run --rm size_api-migrate $(ARGS)
 
         revision:
-        $(DEV_COMPOSE) exec api uv run --no-sync alembic revision --autogenerate -m "$(m)"
+        	$(DEV_COMPOSE) exec api uv run --no-sync alembic revision --autogenerate -m "$(m)"
 
         psql:
-        $(DEV_COMPOSE) exec postgres sh -c 'psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' $(ARGS)
+        	$(DEV_COMPOSE) exec postgres sh -c 'psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"' $(ARGS)
+
         app_bash:
-        $(DEV_COMPOSE) exec api bash $(ARGS)
+        	$(DEV_COMPOSE) exec api bash $(ARGS)
 
         python:
-        $(DEV_COMPOSE) exec api uv run --no-sync python $(ARGS)
+        	$(DEV_COMPOSE) exec api uv run --no-sync python $(ARGS)
 
         clear_shopify_sessions:
-        $(DEV_COMPOSE) exec postgres sh -c 'psql -U "$$POSTGRES_USER" -d "$$SHOPIFY_DB_NAME" -c
-        '\''DELETE FROM "Session" WHERE shop = '\''\''${shop}'\''\'';'\'''
+        	$(DEV_COMPOSE) exec postgres sh -c 'psql -U "$$POSTGRES_USER" -d "$$SHOPIFY_DB_NAME" -c '\''DELETE FROM "Session" WHERE shop = '\''\''${shop}'\''\'';'\'''
 
 
         # Accept positional arguments as Make goals.
         %:
-        @:
+        	@:
         ```
         ]]>
       </example_makefile>
@@ -331,8 +287,7 @@
     <step order="6">Avoid unrelated refactoring.</step>
     <step order="7">Run applicable formatting, linting, type checking, and tests.</step>
     <step order="8">Update documentation when required.</step>
-    <step order="9">Verify logging, security, database, and architectural constraints for changed
-      code.</step>
+    <step order="9">Verify logging, security, database, and architectural constraints for changed code.</step>
   </implementation_workflow>
 
 </ai_coding_guidelines>

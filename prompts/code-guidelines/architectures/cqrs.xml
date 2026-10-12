@@ -5,13 +5,11 @@
   </rule>
 
   <rule>
-    Repository components are responsible for mutating
-    persisted data.
+    Repository components are responsible for mutating persisted data.
   </rule>
 
   <rule>
-    No other application component should directly query
-    or mutate database data.
+    No other application component should directly query or mutate database data.
   </rule>
 
   <queries>
@@ -23,8 +21,7 @@
   <repositories>
 
     <rule>
-      Repositories should only handle ORM operations or
-      execute SQL and return the resulting data.
+      Repositories should only handle ORM operations or execute SQL and return the resulting data.
     </rule>
 
     <rule>
@@ -32,8 +29,7 @@
     </rule>
 
     <rule>
-      Repositories should return data in the form
-      appropriate to the persistence layer.
+      Repositories should return data in the form appropriate to the persistence layer.
     </rule>
 
     <rule>
@@ -53,8 +49,7 @@
     </rule>
 
     <rule>
-      Services are responsible for coordinating
-      persistence operations.
+      Services are responsible for coordinating persistence operations.
     </rule>
 
     <rule>
@@ -66,14 +61,11 @@
     </rule>
 
     <rule>
-      Services are responsible for committing database
-      changes when the project's transaction model
-      requires service-level commits.
+      Services are responsible for committing database changes when the project's transaction model requires service-level commits.
     </rule>
 
     <rule>
-      Services should return DTOs at application
-      boundaries when DTOs are part of the project design.
+      Services should return DTOs at application boundaries when DTOs are part of the project design.
     </rule>
 
   </services>

@@ -14,13 +14,11 @@
 
   <environment>
     <rule>
-      Use Pydantic for reading and validating environment
-      variables when the project uses Pydantic.
+      Use Pydantic for reading and validating environment variables when the project uses Pydantic.
     </rule>
 
     <rule>
-      Keep related environment variables in their
-      appropriate configuration module or file.
+      Keep related environment variables in their appropriate configuration module or file.
     </rule>
   </environment>
 

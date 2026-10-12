@@ -4,138 +4,138 @@
     ```
     my-app/
     ├── src/
-    │ ├── app/
-    │ │ ├── (marketing)/
-    │ │ │ ├── page.tsx
-    │ │ │ ├── pricing/
-    │ │ │ │ └── page.tsx
-    │ │ │ └── about/
-    │ │ │ └── page.tsx
-    │ │ │
-    │ │ ├── (app)/
-    │ │ │ ├── layout.tsx
-    │ │ │ ├── dashboard/
-    │ │ │ │ └── page.tsx
-    │ │ │ ├── settings/
-    │ │ │ │ └── page.tsx
-    │ │ │ └── projects/
-    │ │ │ ├── page.tsx
-    │ │ │ └── [projectId]/
-    │ │ │ └── page.tsx
-    │ │ │
-    │ │ ├── api/
-    │ │ │ └── webhooks/
-    │ │ │ └── stripe/
-    │ │ │ └── route.ts
-    │ │ │
-    │ │ ├── layout.tsx
-    │ │ ├── error.tsx
-    │ │ ├── not-found.tsx
-    │ │ ├── loading.tsx
-    │ │ └── globals.css
-    │ │
-    │ ├── features/
-    │ │ ├── auth/
-    │ │ │ ├── components/
-    │ │ │ │ ├── login-form.tsx
-    │ │ │ │ └── signup-form.tsx
-    │ │ │ ├── hooks/
-    │ │ │ │ └── use-auth.ts
-    │ │ │ ├── actions/
-    │ │ │ │ └── login.ts
-    │ │ │ ├── api/
-    │ │ │ │ └── auth-api.ts
-    │ │ │ ├── schemas/
-    │ │ │ │ └── auth-schema.ts
-    │ │ │ ├── types.ts
-    │ │ │ └── index.ts
-    │ │ │
-    │ │ ├── projects/
-    │ │ │ ├── components/
-    │ │ │ │ ├── project-card.tsx
-    │ │ │ │ ├── project-list.tsx
-    │ │ │ │ └── project-form.tsx
-    │ │ │ ├── hooks/
-    │ │ │ │ └── use-projects.ts
-    │ │ │ ├── actions/
-    │ │ │ │ ├── create-project.ts
-    │ │ │ │ └── delete-project.ts
-    │ │ │ ├── api/
-    │ │ │ │ └── projects-api.ts
-    │ │ │ ├── schemas/
-    │ │ │ │ └── project-schema.ts
-    │ │ │ ├── types.ts
-    │ │ │ └── index.ts
-    │ │ │
-    │ │ └── billing/
-    │ │ │ ├── components/
-    │ │ │ ├── hooks/
-    │ │ │ ├── actions/
-    │ │ │ ├── api/
-    │ │ │ ├── schemas/
-    │ │ │ ├── types.ts
-    │ │ │ └── index.ts
-    │ │ │
-    │ │ ├── components/
-    │ │ │ ├── ui/
-    │ │ │ │ ├── button.tsx
-    │ │ │ │ ├── dialog.tsx
-    │ │ │ │ ├── input.tsx
-    │ │ │ │ └── dropdown.tsx
-    │ │ │ ├── layout/
-    │ │ │ │ ├── header.tsx
-    │ │ │ │ ├── sidebar.tsx
-    │ │ │ │ └── footer.tsx
-    │ │ │ └── providers/
-    │ │ │ ├── query-provider.tsx
-    │ │ │ └── theme-provider.tsx
-    │ │ │
-    │ │ ├── lib/
-    │ │ │ ├── auth/
-    │ │ │ │ ├── session.ts
-    │ │ │ │ └── permissions.ts
-    │ │ │ ├── db/
-    │ │ │ │ ├── client.ts
-    │ │ │ │ └── queries.ts
-    │ │ │ ├── http/
-    │ │ │ │ └── client.ts
-    │ │ │ ├── logger/
-    │ │ │ │ └── index.ts
-    │ │ │ └── utils/
-    │ │ │ ├── cn.ts
-    │ │ │ └── format-date.ts
-    │ │ │
-    │ │ ├── config/
-    │ │ │ ├── site.ts
-    │ │ │ │ └── navigation.ts
-    │ │ │
-    │ │ ├── hooks/
-    │ │ │ ├── use-debounce.ts
-    │ │ │ └── use-media-query.ts
-    │ │ │
-    │ │ ├── types/
-    │ │ │ ├── api.ts
-    │ │ │ │ └── common.ts
-    │ │ │
-    │ │ └── constants/
-    │ │ │ └── index.ts
-    │ │
-    │ ├── public/
-    │ │ ├── images/
-    │ │ ├── icons/
-    │ │ └── fonts/
-    │ │
-    │ ├── tests/
-    │ │ ├── unit/
-    │ │ ├── integration/
-    │ │ └── e2e/
-    │ │
-    │ ├── .env.example
-    │ ├── eslint.config.mjs
-    │ ├── next.config.ts
-    │ ├── package.json
-    │ ├── tsconfig.json
-    │ └── README.md
+    │   ├── app/
+    │   │   ├── (marketing)/
+    │   │   │   ├── page.tsx
+    │   │   │   ├── pricing/
+    │   │   │   │   └── page.tsx
+    │   │   │   └── about/
+    │   │   │       └── page.tsx
+    │   │   │
+    │   │   ├── (app)/
+    │   │   │   ├── layout.tsx
+    │   │   │   ├── dashboard/
+    │   │   │   │   └── page.tsx
+    │   │   │   ├── settings/
+    │   │   │   │   └── page.tsx
+    │   │   │   └── projects/
+    │   │   │       ├── page.tsx
+    │   │   │       └── [projectId]/
+    │   │   │           └── page.tsx
+    │   │   │
+    │   │   ├── api/
+    │   │   │   └── webhooks/
+    │   │   │       └── stripe/
+    │   │   │           └── route.ts
+    │   │   │
+    │   │   ├── layout.tsx
+    │   │   ├── error.tsx
+    │   │   ├── not-found.tsx
+    │   │   ├── loading.tsx
+    │   │   └── globals.css
+    │   │
+    │   ├── features/
+    │   │   ├── auth/
+    │   │   │   ├── components/
+    │   │   │   │   ├── login-form.tsx
+    │   │   │   │   └── signup-form.tsx
+    │   │   │   ├── hooks/
+    │   │   │   │   └── use-auth.ts
+    │   │   │   ├── actions/
+    │   │   │   │   └── login.ts
+    │   │   │   ├── api/
+    │   │   │   │   └── auth-api.ts
+    │   │   │   ├── schemas/
+    │   │   │   │   └── auth-schema.ts
+    │   │   │   ├── types.ts
+    │   │   │   └── index.ts
+    │   │   │
+    │   │   ├── projects/
+    │   │   │   ├── components/
+    │   │   │   │   ├── project-card.tsx
+    │   │   │   │   ├── project-list.tsx
+    │   │   │   │   └── project-form.tsx
+    │   │   │   ├── hooks/
+    │   │   │   │   └── use-projects.ts
+    │   │   │   ├── actions/
+    │   │   │   │   ├── create-project.ts
+    │   │   │   │   └── delete-project.ts
+    │   │   │   ├── api/
+    │   │   │   │   └── projects-api.ts
+    │   │   │   ├── schemas/
+    │   │   │   │   └── project-schema.ts
+    │   │   │   ├── types.ts
+    │   │   │   └── index.ts
+    │   │   │
+    │   │   └── billing/
+    │   │       ├── components/
+    │   │       ├── hooks/
+    │   │       ├── actions/
+    │   │       ├── api/
+    │   │       ├── schemas/
+    │   │       ├── types.ts
+    │   │       └── index.ts
+    │   │
+    │   ├── components/
+    │   │   ├── ui/
+    │   │   │   ├── button.tsx
+    │   │   │   ├── dialog.tsx
+    │   │   │   ├── input.tsx
+    │   │   │   └── dropdown.tsx
+    │   │   ├── layout/
+    │   │   │   ├── header.tsx
+    │   │   │   ├── sidebar.tsx
+    │   │   │   └── footer.tsx
+    │   │   └── providers/
+    │   │       ├── query-provider.tsx
+    │   │       └── theme-provider.tsx
+    │   │
+    │   ├── lib/
+    │   │   ├── auth/
+    │   │   │   ├── session.ts
+    │   │   │   └── permissions.ts
+    │   │   ├── db/
+    │   │   │   ├── client.ts
+    │   │   │   └── queries.ts
+    │   │   ├── http/
+    │   │   │   └── client.ts
+    │   │   ├── logger/
+    │   │   │   └── index.ts
+    │   │   └── utils/
+    │   │       ├── cn.ts
+    │   │       └── format-date.ts
+    │   │
+    │   ├── config/
+    │   │   ├── site.ts
+    │   │   └── navigation.ts
+    │   │
+    │   ├── hooks/
+    │   │   ├── use-debounce.ts
+    │   │   └── use-media-query.ts
+    │   │
+    │   ├── types/
+    │   │   ├── api.ts
+    │   │   └── common.ts
+    │   │
+    │   └── constants/
+    │       └── index.ts
+    │
+    ├── public/
+    │   ├── images/
+    │   ├── icons/
+    │   └── fonts/
+    │
+    ├── tests/
+    │   ├── unit/
+    │   ├── integration/
+    │   └── e2e/
+    │
+    ├── .env.example
+    ├── eslint.config.mjs
+    ├── next.config.ts
+    ├── package.json
+    ├── tsconfig.json
+    └── README.md
     ```
   </structure>
 

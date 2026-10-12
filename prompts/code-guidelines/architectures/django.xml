@@ -3,35 +3,34 @@
   <django_structure>
 
     <rule>
-      The following is the recommended Django structure when
-      the Django technology profile is active.
+      The following is the recommended Django structure when the Django technology profile is active.
     </rule>
 
     <structure>
       apps/
-      accounts/
-      customers/
-      dashboard/
-      documents/
-      passports/
-      payments/
-      tickets/
-      visas/
+          accounts/
+          customers/
+          dashboard/
+          documents/
+          passports/
+          payments/
+          tickets/
+          visas/
 
       common/
-      exceptions.py
-      mixins/
-      models/
-      pagination.py
-      permissions/
-      utils/
+          exceptions.py
+          mixins/
+          models/
+          pagination.py
+          permissions/
+          utils/
 
       config/
-      asgi.py
-      celery.py
-      settings/
-      urls.py
-      wsgi.py
+          asgi.py
+          celery.py
+          settings/
+          urls.py
+          wsgi.py
 
       docs/
 
@@ -44,19 +43,19 @@
       README.md
 
       requirements/
-      base.txt
-      dev.txt
-      prod.txt
+          base.txt
+          dev.txt
+          prod.txt
 
       tests/
-      accounts/
-      customers/
-      dashboard/
-      factories.py
-      passports/
-      payments/
-      tickets/
-      visas/
+          accounts/
+          customers/
+          dashboard/
+          factories.py
+          passports/
+          payments/
+          tickets/
+          visas/
 
       uv.lock
     </structure>

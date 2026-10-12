@@ -1,23 +1,19 @@
 <architecture name="modular">
 
   <rule>
-    Organize code around cohesive modules or business
-    domains.
+    Organize code around cohesive modules or business domains.
   </rule>
 
   <rule>
-    Each module should expose a small and intentional
-    public interface.
+    Each module should expose a small and intentional public interface.
   </rule>
 
   <rule>
-    Avoid unnecessary dependencies between unrelated
-    modules.
+    Avoid unnecessary dependencies between unrelated modules.
   </rule>
 
   <rule>
-    Keep implementation details private to the module
-    whenever possible.
+    Keep implementation details private to the module whenever possible.
   </rule>
 
 </architecture>

@@ -13,8 +13,7 @@
 
   <routers>
     <rule>
-      Routers should define routes and connect them to
-      controllers.
+      Routers should define routes and connect them to controllers.
 
       Routers should contain no business logic.
     </rule>
@@ -22,8 +21,7 @@
 
   <controllers>
     <rule>
-      Controllers should validate requests and call
-      services.
+      Controllers should validate requests and call services.
 
       Controllers should contain no business logic.
     </rule>
@@ -37,15 +35,13 @@
 
   <authorization>
     <rule>
-      For authorization, use Policy classes similar to
-      the policy pattern used by Ruby on Rails.
+      For authorization, use Policy classes similar to the policy pattern used by Ruby on Rails.
     </rule>
   </authorization>
 
   <naming>
     <rule>
-      Use filenames such as _router.py and _controller.py
-      where this convention is adopted by the project.
+      Use filenames such as _router.py and _controller.py where this convention is adopted by the project.
     </rule>
   </naming>
 
@@ -53,17 +49,13 @@
 
     <authentication>
       <rule>
-        When user authentication exists,
-        request.state.user should contain the
-        authenticated user information.
+        When user authentication exists, request.state.user should contain the authenticated user information.
       </rule>
     </authentication>
 
     <multi_tenancy>
       <rule>
-        When multi-tenancy exists,
-        request.state.tenant should contain the
-        current tenant information.
+        When multi-tenancy exists, request.state.tenant should contain the current tenant information.
       </rule>
     </multi_tenancy>
 
