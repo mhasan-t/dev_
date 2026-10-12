@@ -8,16 +8,17 @@
 #      enabled in the given project's project.xml, and
 #   3. the complete project.xml contents.
 #
-# The result is written to output/<timestamp>/ next to this script, either
+# The result is written to <dest>/<timestamp>/ (default: output/ next to this script), either
 # inlined into AGENTS.md or as .ai/instructions.<file> linked from AGENTS.md.
 # The AGENTS.md preamble comes from ex_xml_AGENTS.md.
 #
 # Usage:
-#   ./build_instructions.sh [--output xml|md] [--file EXT] [--inline] [path/to/project.xml]
+#   ./build_instructions.sh [--output xml|md] [--file EXT] [--inline] [--dest DIR] [path/to/project.xml]
 #
 #   --output  Content format of the instructions. Default: xml
 #   --file    Extension of .ai/instructions.<EXT>. Default: xml. Ignored with --inline.
 #   --inline  Write the instructions directly into AGENTS.md instead of .ai/.
+#   --dest    Folder that receives the timestamped build. Default: output/ next to this script.
 #   project.xml defaults to ./project.xml
 #
 # Examples:
@@ -39,6 +40,7 @@ AGENTS_TEMPLATE="$GUIDELINES_DIR/ex_xml_AGENTS.md"
 FORMAT="xml"
 FILE_EXT="xml"
 INLINE=false
+DEST="$GUIDELINES_DIR/output"
 PROJECT_XML="project.xml"
 
 while [[ $# -gt 0 ]]; do
@@ -46,6 +48,7 @@ while [[ $# -gt 0 ]]; do
         --output) FORMAT="${2:-}"; shift 2 ;;
         --file)   FILE_EXT="${2:-}"; shift 2 ;;
         --inline) INLINE=true; shift ;;
+        --dest)   DEST="${2:-}"; shift 2 ;;
         -*)       echo "error: unknown option: $1" >&2; exit 1 ;;
         *)        PROJECT_XML="$1"; shift ;;
     esac
@@ -216,7 +219,7 @@ if [[ "$FORMAT" == "md" ]]; then
     mv "$TMP.md" "$TMP"
 fi
 
-OUTPUT_DIR="$GUIDELINES_DIR/output/$(date +%Y%m%d-%H%M%S)"
+OUTPUT_DIR="$DEST/$(date +%Y%m%d-%H%M%S)"
 # Fail instead of mixing files when two builds start in the same second.
 mkdir -p "$(dirname "$OUTPUT_DIR")"
 mkdir "$OUTPUT_DIR"
