@@ -144,10 +144,7 @@ def heading(el, depth):
     return f"\n{'#' * min(depth, 6)} {label(el)}\n"
 
 def body(el):
-    text = textwrap.dedent((el.text or "").strip("\n")).strip()
-    if el.tag == "structure" and "```" not in text:
-        text = f"```\n{text}\n```"
-    return text
+    return textwrap.dedent((el.text or "").strip("\n")).strip()
 
 def render(el, depth, out):
     text = body(el)
@@ -215,10 +212,21 @@ if [[ "$FORMAT" == "md" ]]; then
     xml_to_md "$TMP" > "$TMP.md"
     mv "$TMP.md" "$TMP"
 elif [[ "$INLINE" == true || "$FILE_EXT" == "md" ]]; then
-    # Raw XML in a .md file renders as a mix of text, hidden tags and
-    # indented code blocks. Fence it; four backticks because the content
-    # contains ``` blocks.
-    { printf '````xml\n'; cat "$TMP"; printf '````\n'; } > "$TMP.md"
+    # Make raw XML render as text in a .md file:
+    # - indented lines would become code blocks, so remove indentation
+    #   (keeping relative indentation inside ``` blocks: Makefile tabs, trees);
+    # - CDATA markers hide their content when rendered, so drop them;
+    # - ``` blocks need surrounding blank lines to be recognised as code.
+    awk '
+        /^[ \t]*```/ {
+            if (!fence) { indent = match($0, /[^ \t]/) - 1; print "" }
+            fence = !fence; sub(/^[ \t]+/, ""); print
+            if (!fence) print ""
+            next
+        }
+        fence { print substr($0, indent + 1); next }
+              { sub(/^[ \t]+/, ""); gsub(/<!\[CDATA\[|\]\]>/, ""); if (NF || prev) print; prev = NF }
+    ' "$TMP" > "$TMP.md"
     mv "$TMP.md" "$TMP"
 fi
 

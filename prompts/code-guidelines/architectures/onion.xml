@@ -69,7 +69,7 @@
     </rule>
 
     <structure>
-
+      ```
       src/
           main.py
 
@@ -156,7 +156,7 @@
           functional/
           fixtures/
           conftest.py
-
+      ```
     </structure>
 
   </structure_example>

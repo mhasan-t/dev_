@@ -25,7 +25,7 @@ for FORMAT in xml md; do
         OUT="$(build --output "$FORMAT" --file "$EXT")"
         grep -q "\`.ai/instructions.$EXT\`" "$OUT/AGENTS.md"
         if [[ "$FORMAT" == xml && "$EXT" == md ]]; then
-            [[ "$(head -n 1 "$OUT/.ai/instructions.md")" == '````xml' ]]
+            grep -qx '<ai_coding_guidelines>' "$OUT/.ai/instructions.md"
         elif [[ "$FORMAT" == xml ]]; then
             python3 -I -c 'import sys, xml.etree.ElementTree as E; E.parse(sys.argv[1])' "$OUT/.ai/instructions.$EXT"
         else
@@ -36,7 +36,7 @@ for FORMAT in xml md; do
     OUT="$(build --output "$FORMAT" --inline)"
     [[ ! -e "$OUT/.ai" ]]
     grep -q 'Read the instructions below' "$OUT/AGENTS.md"
-    [[ "$FORMAT" == md ]] || grep -qx '````xml' "$OUT/AGENTS.md"
+    [[ "$FORMAT" == md ]] || grep -qx '<ai_coding_guidelines>' "$OUT/AGENTS.md"
 done
 
 # Existing files: "n" keeps them, "y" overwrites them.

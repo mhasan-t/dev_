@@ -40,7 +40,7 @@ build_instructions.sh [--output xml|md] [--file EXT] [--inline] [project.xml]
 | `--inline` | off | Put the instructions directly in `AGENTS.md` instead of `.ai/`. |
 | `project.xml` | `./project.xml` | Project profile to build from. |
 
-`--output` and `--file` are independent: `--output md --file xml` writes Markdown content to `instructions.xml`. XML written to a `.md` file (`--inline`, or `--file md`) is wrapped in a ```` ```xml ```` code block so it renders as one block.
+`--output` and `--file` are independent: `--output md --file xml` writes Markdown content to `instructions.xml`. XML written to a `.md` file (`--inline`, or `--file md`) is unindented and has its CDATA markers removed, so it renders as text; only the Makefile and directory trees render as code.
 
 Run it from your project root. It writes to the current folder:
 
