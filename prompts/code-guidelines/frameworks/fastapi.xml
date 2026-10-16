@@ -41,7 +41,7 @@
 
   <naming>
     <rule>
-      Use filenames such as _router.py and _controller.py where this convention is adopted by the project.
+      Use filenames such as _router.py, _models.py, _service.py, _controller.py etc.
     </rule>
   </naming>
 

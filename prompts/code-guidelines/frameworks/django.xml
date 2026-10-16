@@ -10,6 +10,12 @@
     </rule>
   </architecture>
 
+  <naming>
+    <rule>
+      Use filenames such as _router.py, _models.py, _service.py, _controller.py etc.
+    </rule>
+  </naming>
+
   <urls>
     <rule>
       urls.py files should only map routes to views or ViewSets.
