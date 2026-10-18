@@ -77,6 +77,7 @@
       <rule>Use appropriate spacing, formatting, types, and structure.</rule>
       <rule>Do not introduce abstractions that hide simple behavior without a clear benefit.</rule>
       <rule>The priority should be performance and readability, not one liner tricks. Break up code into multiple line so that it's easily understanable at a glance.</rule>
+      <rule>Use empty lines to make code more readable.</rule>
     </readability>
 
     <comments>
