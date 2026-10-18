@@ -80,9 +80,10 @@
     </readability>
 
     <comments>
+      <rule>Write comments explaining each file, class, and methods that implement business logic.</rule>
       <rule>Comments must provide information needed to understand implementation logic.</rule>
-      <rule>Comment functions, classes, components, or significant blocks when their purpose or logic is not obvious.</rule>
-      <rule>Explain why non-obvious code exists rather than restating what the code literally does.</rule>
+      <rule>Comment functions, classes, components, or significant blocks.</rule>
+      <rule>Explain why code exists rather than restating what the code literally does.</rule>
       <rule>If parameters, return values, side effects, or assumptions are not clear from a definition, document them using the language's conventional format.</rule>
       <rule>For complex logic, add comments around logical blocks where they materially help a new engineer understand the implementation.</rule>
       <rule>Do not explain programming-language syntax or obvious library usage.</rule>
