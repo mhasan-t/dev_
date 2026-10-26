@@ -167,6 +167,10 @@
       <rule>Update documentation in /docs when changes affect architecture, behavior, APIs, configuration, deployment, or developer workflows.</rule>
       <rule>Do not create documentation links that depend on fragile source-file paths when the paths can change.</rule>
       <rule>Prefer stable conceptual documentation over implementation-path documentation.</rule>
+      <diagram>
+        <rule>Use mermaid diagrams in documentation.<rule>
+        <rule>Don't use special characters in the diagram as older mermaid versions can't render them<rule>
+      </diagram>
     </documentation>
 
     <testing>
