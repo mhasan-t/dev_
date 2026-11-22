@@ -8,26 +8,11 @@
 #   3. every technology / framework / architecture guideline file enabled
 #      in that configuration.
 #
-# The result is written to the current folder, either
-# inlined into AGENTS.md or as .ai/instructions.<file> linked from AGENTS.md.
-# The AGENTS.md preamble comes from ex_xml_AGENTS.md. Asks before overwriting existing files.
+# The result is written to AGENTS.md in the current folder, after the
+# preamble from ex_xml_AGENTS.md. Asks before overwriting an existing AGENTS.md.
 #
 # Usage:
-#   ./build_instructions.sh [--output xml|md] [--file EXT] [--inline]
-#
-#   --output  Content format of the instructions. Default: xml
-#   --file    Extension of .ai/instructions.<EXT>. Default: xml. Ignored with --inline.
-#   --inline  Write the instructions directly into AGENTS.md instead of .ai/.
-#
-# Examples:
-#   # XML rules in .ai/instructions.xml, linked from AGENTS.md:
 #   bash /path/to/code-guidelines/build_instructions.sh
-#
-#   # Markdown rules written into .ai/instructions.xml:
-#   bash /path/to/code-guidelines/build_instructions.sh --output md --file xml
-#
-#   # Markdown rules inlined into AGENTS.md:
-#   bash /path/to/code-guidelines/build_instructions.sh --output md --inline
 
 set -euo pipefail
 
@@ -35,27 +20,8 @@ GUIDELINES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MASTER_XML="$GUIDELINES_DIR/master.xml"
 AGENTS_TEMPLATE="$GUIDELINES_DIR/ex_xml_AGENTS.md"
 
-FORMAT="xml"
-FILE_EXT="xml"
-INLINE=false
-
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --output) FORMAT="${2:-}"; shift 2 ;;
-        --file)   FILE_EXT="${2:-}"; shift 2 ;;
-        --inline) INLINE=true; shift ;;
-        -*)       echo "error: unknown option: $1" >&2; exit 1 ;;
-        *)        echo "error: unexpected argument: $1" >&2; exit 1 ;;
-    esac
-done
-
-if [[ "$FORMAT" != "xml" && "$FORMAT" != "md" ]]; then
-    echo "error: --output must be xml or md, got: $FORMAT" >&2
-    exit 1
-fi
-
-if [[ ! "$FILE_EXT" =~ ^[A-Za-z0-9]+$ ]]; then
-    echo "error: --file must be a plain extension such as xml or md, got: $FILE_EXT" >&2
+if [[ $# -gt 0 ]]; then
+    echo "error: unexpected argument: $1 (no options are accepted)" >&2
     exit 1
 fi
 
@@ -143,54 +109,6 @@ append_project_config() {
     printf '    </project_configuration>\n'
 }
 
-# Convert the merged XML document to Markdown: elements with children become
-# headings, leaf elements become bullets, and preformatted text stays fenced.
-xml_to_md() {
-    python3 - "$1" <<'PY'
-import sys, textwrap
-import xml.etree.ElementTree as ET
-
-def label(el):
-    name = el.tag.replace("_", " ").capitalize()
-    return " ".join([name, *el.attrib.values()])
-
-def heading(el, depth):
-    return f"\n{'#' * min(depth, 6)} {label(el)}\n"
-
-def body(el):
-    return textwrap.dedent((el.text or "").strip("\n")).strip()
-
-def render(el, depth, out):
-    text = body(el)
-
-    if len(el):
-        out.append(heading(el, depth))
-        if text:
-            out.append(text + "\n")
-        for child in el:
-            render(child, depth + 1, out)
-        return
-
-    if not text:
-        return
-
-    # Multi-line non-rule leaves (purpose, structure, examples) read better as sections.
-    if "\n" in text and el.tag != "rule":
-        out.append(heading(el, depth) + f"\n{text}\n")
-        return
-
-    prefix = "- " if el.tag == "rule" else f"- **{label(el)}:** "
-    out.append(prefix + textwrap.indent(text, "  ")[2:])
-
-root = ET.parse(sys.argv[1]).getroot()
-out = []
-for child in root:
-    render(child, 2, out)
-print("\n".join(out).strip())
-PY
-}
-
-
 # Collect the project configuration.
 declare -A PROJECT ENABLED
 OVERRIDES=()
@@ -207,16 +125,14 @@ while RULE="$(ask "Project-specific rule (empty to finish)")" && [[ -n "$RULE" ]
 done
 
 TMP="$(mktemp)"
-trap 'rm -f "$TMP"' EXIT
+trap 'rm -f "$TMP" "$TMP.md"' EXIT
 
 # Start with master.xml's opening/root content, excluding its final
 # closing root tag.
 sed '$d' "$MASTER_XML" > "$TMP"
 
-# Inline builds have no separate instructions file to point to.
-if [[ "$INLINE" == true ]]; then
-    sed -i '/<project_context>/,/<\/project_context>/d' "$TMP"
-fi
+# AGENTS.md holds the instructions itself, so drop the pointer block.
+sed -i '/<project_context>/,/<\/project_context>/d' "$TMP"
 
 # Add the project configuration FIRST, immediately inside the root element.
 append_project_config >> "$TMP"
@@ -233,56 +149,35 @@ done
 # Close the root element opened by master.xml.
 printf '%s\n' "$LAST_LINE" >> "$TMP"
 
-if [[ "$FORMAT" == "md" ]]; then
-    xml_to_md "$TMP" > "$TMP.md"
-    mv "$TMP.md" "$TMP"
-elif [[ "$INLINE" == true || "$FILE_EXT" == "md" ]]; then
-    # Make raw XML render as text in a .md file:
-    # - indented lines would become code blocks, so remove indentation
-    #   (keeping relative indentation inside ``` blocks: Makefile tabs, trees);
-    # - CDATA markers hide their content when rendered, so drop them;
-    # - ``` blocks need surrounding blank lines to be recognised as code.
-    awk '
-        /^[ \t]*```/ {
-            if (!fence) { indent = match($0, /[^ \t]/) - 1; print "" }
-            fence = !fence; sub(/^[ \t]+/, ""); print
-            if (!fence) print ""
-            next
-        }
-        fence { print substr($0, indent + 1); next }
-              { sub(/^[ \t]+/, ""); gsub(/<!\[CDATA\[|\]\]>/, ""); if (NF || prev) print; prev = NF }
-    ' "$TMP" > "$TMP.md"
-    mv "$TMP.md" "$TMP"
-fi
+# Make raw XML render as text in AGENTS.md:
+# - indented lines would become code blocks, so remove indentation
+#   (keeping relative indentation inside ``` blocks: Makefile tabs, trees);
+# - CDATA markers hide their content when rendered, so drop them;
+# - ``` blocks need surrounding blank lines to be recognised as code.
+awk '
+    /^[ \t]*```/ {
+        if (!fence) { indent = match($0, /[^ \t]/) - 1; print "" }
+        fence = !fence; sub(/^[ \t]+/, ""); print
+        if (!fence) print ""
+        next
+    }
+    fence { print substr($0, indent + 1); next }
+          { sub(/^[ \t]+/, ""); gsub(/<!\[CDATA\[|\]\]>/, ""); if (NF || prev) print; prev = NF }
+' "$TMP" > "$TMP.md"
 
-INSTRUCTIONS=".ai/instructions.$FILE_EXT"
-FILES=(AGENTS.md)
-[[ "$INLINE" == true ]] || FILES+=("$INSTRUCTIONS")
-
-# Ask before overwriting files that already exist in the current folder.
-EXISTING=()
-for F in "${FILES[@]}"; do
-    [[ -e "$F" ]] && EXISTING+=("$F")
-done
-if [[ ${#EXISTING[@]} -gt 0 ]]; then
+if [[ -e AGENTS.md ]]; then
     ANSWER=""
-    read -r -p "This will overwrite existing files [${EXISTING[*]}], continue? y/n " ANSWER || true
+    read -r -p "This will overwrite existing AGENTS.md, continue? y/n " ANSWER || true
     if [[ "$ANSWER" != [yY] ]]; then
         echo "Aborted." >&2
         exit 1
     fi
 fi
 
-if [[ "$INLINE" == true ]]; then
-    {
-        sed 's/`\.ai\/instructions\.xml`/the instructions below/' "$AGENTS_TEMPLATE"
-        printf '\n'
-        cat "$TMP"
-    } > AGENTS.md
-else
-    mkdir -p .ai
-    cp "$TMP" "$INSTRUCTIONS"
-    sed "s|\`\.ai/instructions\.xml\`|\`$INSTRUCTIONS\`|" "$AGENTS_TEMPLATE" > AGENTS.md
-fi
+{
+    sed 's/`\.ai\/instructions\.xml`/the instructions below/' "$AGENTS_TEMPLATE"
+    printf '\n'
+    cat "$TMP.md"
+} > AGENTS.md
 
-echo "Created ${FILES[*]} in $PWD"
+echo "Created AGENTS.md in $PWD"

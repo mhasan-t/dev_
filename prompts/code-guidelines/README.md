@@ -10,21 +10,15 @@ Builds agent instructions (`AGENTS.md`) for a project by merging the universal r
 | `technologies/`, `frameworks/`, `architectures/`, `deployment/` | Optional rule sets, included when chosen during the build. |
 | `ex_xml_AGENTS.md` | Preamble used for the generated `AGENTS.md`. |
 | `build_instructions.sh` | Builds the output. |
-| `check_build_instructions.sh` | Smoke check: builds every option combination. |
+| `check_build_instructions.sh` | Smoke check for the build. |
 
 ## Build
 
 ```sh
-build_instructions.sh [--output xml|md] [--file EXT] [--inline]
+build_instructions.sh
 ```
 
-| Option | Default | Meaning |
-| --- | --- | --- |
-| `--output` | `xml` | Content format: `xml` or `md`. |
-| `--file` | `xml` | Extension of `.ai/instructions.<EXT>`. Ignored with `--inline`. |
-| `--inline` | off | Put the instructions directly in `AGENTS.md` instead of `.ai/`. |
-
-`--output` and `--file` are independent: `--output md --file xml` writes Markdown content to `instructions.xml`. XML written to a `.md` file (`--inline`, or `--file md`) is unindented and has its CDATA markers removed, so it renders as text; only the Makefile and directory trees render as code.
+It takes no options.
 
 Run it from your project root. It asks for the project configuration:
 
@@ -37,24 +31,11 @@ Run it from your project root. It asks for the project configuration:
 
 Every answer may be left empty. The answers are written into the instructions as the project configuration, followed by the chosen rule sets.
 
-It then writes to the current folder:
+It then writes `AGENTS.md` to the current folder: the preamble from `ex_xml_AGENTS.md` followed by the merged XML rules. The XML is unindented and has its CDATA markers removed so it renders as text; only the Makefile and directory trees render as code.
 
-```
-AGENTS.md              # default: tells the agent to read .ai/instructions.xml
-.ai/instructions.xml   # omitted with --inline, where AGENTS.md holds everything
-```
+If `AGENTS.md` exists, it asks first: `This will overwrite existing AGENTS.md, continue? y/n`. Anything other than `y` aborts.
 
-If any of these files exist, it asks first: `This will overwrite existing files [AGENTS.md], continue? y/n`. Anything other than `y` aborts.
-
-Examples:
-
-```sh
-build_instructions.sh                              # XML in .ai/instructions.xml
-build_instructions.sh --output md --file md        # Markdown in .ai/instructions.md
-build_instructions.sh --output md --inline         # Markdown inside AGENTS.md
-```
-
-Requires `bash` and `python3` (standard library only, used for `--output md`).
+Requires `bash` only.
 
 ## Shell alias (optional)
 
@@ -65,7 +46,7 @@ alias build_instructions='git -C ~/code/dev_ pull && ~/code/dev_/prompts/code-gu
 ```
 
 ```sh
-build_instructions --output md   # asks the questions, writes AGENTS.md and .ai/ here
+build_instructions   # asks the questions, writes AGENTS.md here
 ```
 
 ## Adding a rule set

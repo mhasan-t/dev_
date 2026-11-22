@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #
-# Smoke check for build_instructions.sh: builds every output/file/inline
-# combination in a temporary folder, verifies the expected files and formats,
-# and checks input validation and the overwrite prompt.
+# Smoke check for build_instructions.sh: builds AGENTS.md in a temporary
+# folder, verifies its content, and checks input validation and the
+# overwrite prompt.
 #
 # Usage: bash check_build_instructions.sh
 
@@ -17,38 +17,19 @@ trap 'rm -rf "$WORK"' EXIT
 # (a blank line, or end of input, finishes the rules).
 ANSWERS="$(printf '%s\n' 'Demo <App>' 'python,' 'fastapi' 'onion, modular' 'docker-compose' 'python 3.12' 'postgresql' 'uv' 'Use A & B, always.')"
 
-# Run one build in a fresh folder and print that folder.
-build() {
-    local out
-    out="$(mktemp -d -p "$WORK")"
-    (cd "$out" && bash "$DIR/build_instructions.sh" "$@" <<< "$ANSWERS" > /dev/null)
-    echo "$out"
-}
+OUT="$(mktemp -d -p "$WORK")"
+(cd "$OUT" && bash "$DIR/build_instructions.sh" <<< "$ANSWERS" > /dev/null)
+[[ "$(ls -A "$OUT")" == AGENTS.md ]]
+F="$OUT/AGENTS.md"
+grep -q 'Read the instructions below' "$F"
+grep -qx '<ai_coding_guidelines>' "$F"
+grep -q 'Use A &amp; B, always.' "$F"
+grep -q '<architecture name="modular">' "$F"
+grep -q '<deployment name="docker-compose">' "$F"
+grep -qi 'project.context' "$F" && exit 1
 
-for FORMAT in xml md; do
-    for EXT in xml md; do
-        OUT="$(build --output "$FORMAT" --file "$EXT")"
-        F="$OUT/.ai/instructions.$EXT"
-        grep -q "\`.ai/instructions.$EXT\`" "$OUT/AGENTS.md"
-        grep -q 'Use A &amp; B, always.\|Use A & B, always.' "$F"
-        grep -qi 'project.context' "$F"
-        if [[ "$FORMAT" == xml && "$EXT" == md ]]; then
-            grep -qx '<ai_coding_guidelines>' "$F"
-        elif [[ "$FORMAT" == xml ]]; then
-            python3 -I -c 'import sys, xml.etree.ElementTree as E; E.parse(sys.argv[1])' "$F"
-            grep -q '<architecture name="modular">' "$F"
-            grep -q '<deployment name="docker-compose">' "$F"
-        else
-            grep -q '^## Universal rules$' "$F"
-        fi
-    done
-
-    OUT="$(build --output "$FORMAT" --inline)"
-    [[ ! -e "$OUT/.ai" ]]
-    grep -q 'Read the instructions below' "$OUT/AGENTS.md"
-    grep -qi 'project.context' "$OUT/AGENTS.md" && exit 1
-    [[ "$FORMAT" == md ]] || grep -qx '<ai_coding_guidelines>' "$OUT/AGENTS.md"
-done
+# Options are no longer accepted.
+bash "$DIR/build_instructions.sh" --inline < /dev/null > /dev/null 2>&1 && exit 1
 
 cd "$WORK"
 
