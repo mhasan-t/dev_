@@ -188,7 +188,7 @@
 
     <developer_experience>
       <rule>Always make changes in the working tree. Never modify staged files.</rule>
-      <rule>Use `Makefile` for spinning up dev servers, stopping, cleaning, and inspecting containers, data, and servers.</rule>
+      <rule>Use language based scripts like `uv run` or `pnpm run` for spinning up dev servers, stopping, cleaning, and inspecting containers, data, and servers. When no language specific tools are available, use `Makefile`</rule>
       <example_makefile>
         <![CDATA[
         ```
